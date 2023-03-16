@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.KyEnterpriseProjectDeclarationMapper">
+
+    <resultMap type="KyEnterpriseProjectDeclaration" id="KyEnterpriseProjectDeclarationResult">
+        <result property="id"    column="id"    />
+        <result property="projectDeclarationId"    column="project_declaration_id"    />
+        <result property="enterpriseId"    column="enterprise_id"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="firstAuditResult"    column="first_audit_result"    />
+        <result property="lastAuditResult"    column="last_audit_result"    />
+        <result property="declaredFileUrl"    column="declared_file_url"    />
+        <result property="reportingCompany"    column="reporting_company"    />
+        <result property="declarationContact"    column="declaration_contact"    />
+        <result property="contactNumber"    column="contact_number"    />
+        <result property="initialReviewer"    column="initial_reviewer"    />
+        <result property="reviewOfficer"    column="review_officer"    />
+        <result property="firstAuditReason"    column="first_audit_reason"    />
+        <result property="lastAuditReason"    column="last_audit_reason"    />
+    </resultMap>
+
+    <sql id="selectKyEnterpriseProjectDeclarationVo">
+        select id, project_declaration_id, enterprise_id, audit_status, first_audit_result, last_audit_result, declared_file_url, reporting_company, declaration_contact, contact_number, initial_reviewer, review_officer, first_audit_reason, last_audit_reason from ky_enterprise_project_declaration
+    </sql>
+
+    <select id="selectKyEnterpriseProjectDeclarationList" parameterType="KyEnterpriseProjectDeclaration" resultMap="KyEnterpriseProjectDeclarationResult">
+        <include refid="selectKyEnterpriseProjectDeclarationVo"/>
+        <where>
+            <if test="projectDeclarationId != null "> and project_declaration_id = #{projectDeclarationId}</if>
+            <if test="enterpriseId != null "> and enterprise_id = #{enterpriseId}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="firstAuditResult != null "> and first_audit_result = #{firstAuditResult}</if>
+            <if test="lastAuditResult != null "> and last_audit_result = #{lastAuditResult}</if>
+            <if test="declaredFileUrl != null  and declaredFileUrl != ''"> and declared_file_url = #{declaredFileUrl}</if>
+            <if test="reportingCompany != null  and reportingCompany != ''"> and reporting_company = #{reportingCompany}</if>
+            <if test="declarationContact != null  and declarationContact != ''"> and declaration_contact = #{declarationContact}</if>
+            <if test="contactNumber != null  and contactNumber != ''"> and contact_number = #{contactNumber}</if>
+            <if test="initialReviewer != null  and initialReviewer != ''"> and initial_reviewer = #{initialReviewer}</if>
+            <if test="reviewOfficer != null  and reviewOfficer != ''"> and review_officer = #{reviewOfficer}</if>
+            <if test="firstAuditReason != null  and firstAuditReason != ''"> and first_audit_reason = #{firstAuditReason}</if>
+            <if test="lastAuditReason != null  and lastAuditReason != ''"> and last_audit_reason = #{lastAuditReason}</if>
+        </where>
+    </select>
+
+    <select id="selectKyEnterpriseProjectDeclarationById" parameterType="Long" resultMap="KyEnterpriseProjectDeclarationResult">
+        <include refid="selectKyEnterpriseProjectDeclarationVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectKyEnterpriseProjectDeclarationCountByParams" parameterType="Map" resultType="Long">
+        SELECT count(1) FROM  ky_enterprise_project_declaration  epd join `ky_project_declaration`  pd  on  epd.project_declaration_id=pd.id
+        <where>
+            <if test="originalpolicyId!=null">
+                and pd.original_policy_id=#{originalpolicyId}
+            </if>
+            <if test="enterpriseId!=null">
+                and epd.enterprise_id=#{enterpriseId}
+            </if>
+        </where>
+
+    </select>
+    <insert id="insertKyEnterpriseProjectDeclaration" parameterType="KyEnterpriseProjectDeclaration" useGeneratedKeys="true" keyProperty="id">
+        insert into ky_enterprise_project_declaration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectDeclarationId != null">project_declaration_id,</if>
+            <if test="enterpriseId != null">enterprise_id,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="firstAuditResult != null">first_audit_result,</if>
+            <if test="lastAuditResult != null">last_audit_result,</if>
+            <if test="declaredFileUrl != null">declared_file_url,</if>
+            <if test="reportingCompany != null">reporting_company,</if>
+            <if test="declarationContact != null">declaration_contact,</if>
+            <if test="contactNumber != null">contact_number,</if>
+            <if test="initialReviewer != null">initial_reviewer,</if>
+            <if test="reviewOfficer != null">review_officer,</if>
+            <if test="firstAuditReason != null">first_audit_reason,</if>
+            <if test="lastAuditReason != null">last_audit_reason,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectDeclarationId != null">#{projectDeclarationId},</if>
+            <if test="enterpriseId != null">#{enterpriseId},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="firstAuditResult != null">#{firstAuditResult},</if>
+            <if test="lastAuditResult != null">#{lastAuditResult},</if>
+            <if test="declaredFileUrl != null">#{declaredFileUrl},</if>
+            <if test="reportingCompany != null">#{reportingCompany},</if>
+            <if test="declarationContact != null">#{declarationContact},</if>
+            <if test="contactNumber != null">#{contactNumber},</if>
+            <if test="initialReviewer != null">#{initialReviewer},</if>
+            <if test="reviewOfficer != null">#{reviewOfficer},</if>
+            <if test="firstAuditReason != null">#{firstAuditReason},</if>
+            <if test="lastAuditReason != null">#{lastAuditReason},</if>
+        </trim>
+    </insert>
+
+    <update id="updateKyEnterpriseProjectDeclaration" parameterType="KyEnterpriseProjectDeclaration">
+        update ky_enterprise_project_declaration
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectDeclarationId != null">project_declaration_id = #{projectDeclarationId},</if>
+            <if test="enterpriseId != null">enterprise_id = #{enterpriseId},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="firstAuditResult != null">first_audit_result = #{firstAuditResult},</if>
+            <if test="lastAuditResult != null">last_audit_result = #{lastAuditResult},</if>
+            <if test="declaredFileUrl != null">declared_file_url = #{declaredFileUrl},</if>
+            <if test="reportingCompany != null">reporting_company = #{reportingCompany},</if>
+            <if test="declarationContact != null">declaration_contact = #{declarationContact},</if>
+            <if test="contactNumber != null">contact_number = #{contactNumber},</if>
+            <if test="initialReviewer != null">initial_reviewer = #{initialReviewer},</if>
+            <if test="reviewOfficer != null">review_officer = #{reviewOfficer},</if>
+            <if test="firstAuditReason != null">first_audit_reason = #{firstAuditReason},</if>
+            <if test="lastAuditReason != null">last_audit_reason = #{lastAuditReason},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteKyEnterpriseProjectDeclarationById" parameterType="Long">
+        delete from ky_enterprise_project_declaration where id = #{id}
+    </delete>
+
+    <delete id="deleteKyEnterpriseProjectDeclarationByIds" parameterType="String">
+        delete from ky_enterprise_project_declaration where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

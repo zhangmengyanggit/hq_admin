@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.KyOriginalPolicyMapper">
+    <resultMap type="KyOriginalPolicy" id="KyOriginalPolicyResult">
+        <result property="id"    column="id"    />
+        <result property="tittle"    column="tittle"    />
+        <result property="content"    column="content"    />
+        <result property="policyLevel"    column="policy_level"    />
+        <result property="publishingDepartment"    column="publishing_department"    />
+        <result property="policyCategory"    column="policy_category"    />
+        <result property="applicableIndustries"    column="applicable_industries"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="appendixUrl"    column="appendix_url"    />
+        <result property="publishUnit"    column="publish_unit"    />
+        <result property="publisher"    column="publisher"    />
+        <result property="meansUrl"    column="means_url"    />
+        <result property="itemStatus"    column="item_status"    />
+        <result property="tagIds"    column="tag_ids"    />
+        <result property="publishStatus"    column="publish_status"    />
+        <result property="validStatus"    column="valid_status"    />
+        <result property="validDate"    column="valid_date"    />
+        <result property="applyForCash"    column="apply_for_cash"    />
+        <result property="redeemContact"    column="redeem_contact"    />
+        <result property="redeemContactPhone"    column="redeem_contact_phone"    />
+        <result property="trade"    column="trade"    />
+        <result property="street"    column="street"    />
+        <result property="region"    column="region"    />
+        <result property="city"    column="city"    />
+        <result property="province"    column="province"    />
+    </resultMap>
+
+    <sql id="selectKyOriginalPolicyVo">
+        select id, tittle,street,region,city,province, content, policy_level, publishing_department, policy_category, applicable_industries, publish_time, state, create_time, create_by, appendix_url, publish_unit, publisher, means_url, item_status, tag_ids, publish_status, valid_status, valid_date, apply_for_cash, redeem_contact, redeem_contact_phone, trade from ky_original_policy
+    </sql>
+
+    <select id="selectKyOriginalPolicyList" parameterType="KyOriginalPolicy" resultMap="KyOriginalPolicyResult">
+        <include refid="selectKyOriginalPolicyVo"/>
+        <where>
+            <if test="tittle != null  and tittle != ''"> and tittle = #{tittle}</if>
+            <if test="policyLevel != null  and policyLevel != ''"> and policy_level = #{policyLevel}</if>
+            <if test="policyCategory != null  and policyCategory != ''"> and policy_category = #{policyCategory}</if>
+            <if test="applicableIndustries != null  and applicableIndustries != ''"> and applicable_industries = #{applicableIndustries}</if>
+            <if test="params.beginPublishTime != null and params.beginPublishTime != ''"><!-- 开始时间检索 -->
+                and date_format(publish_time,'%y%m%d') &gt;= date_format(#{params.beginPublishTime},'%y%m%d')
+            </if>
+            <if test="params.endPublishTime != null and params.endPublishTime != ''"><!-- 结束时间检索 -->
+                and date_format(publish_time,'%y%m%d') &lt;= date_format(#{params.endPublishTime},'%y%m%d')
+            </if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+            <if test="appendixUrl != null  and appendixUrl != ''"> and appendix_url = #{appendixUrl}</if>
+            <if test="publishUnit != null  and publishUnit != ''"> and publish_unit = #{publishUnit}</if>
+            <if test="publisher != null  and publisher != ''"> and publisher = #{publisher}</if>
+            <if test="meansUrl != null  and meansUrl != ''"> and means_url = #{meansUrl}</if>
+            <if test="itemStatus != null  and itemStatus != ''"> and item_status = #{itemStatus}</if>
+            <if test="tagIds != null  and tagIds != ''"> and tag_ids = #{tagIds}</if>
+            <if test="publishStatus != null "> and publish_status = #{publishStatus}</if>
+            <if test="validStatus != null "> and valid_status = #{validStatus}</if>
+            <if test="validDate != null "> and valid_date = #{validDate}</if>
+            <if test="applyForCash != null "> and apply_for_cash = #{applyForCash}</if>
+            <if test="redeemContact != null  and redeemContact != ''"> and redeem_contact = #{redeemContact}</if>
+            <if test="redeemContactPhone != null  and redeemContactPhone != ''"> and redeem_contact_phone = #{redeemContactPhone}</if>
+            <if test="trade != null  and trade != ''"> and trade = #{trade}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(valid_date,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(valid_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectKyOriginalPolicyById" parameterType="Long" resultMap="KyOriginalPolicyResult">
+        <include refid="selectKyOriginalPolicyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertKyOriginalPolicy" parameterType="KyOriginalPolicy" useGeneratedKeys="true" keyProperty="id">
+        insert into ky_original_policy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tittle != null and tittle != ''">tittle,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="policyLevel != null and policyLevel != ''">policy_level,</if>
+            <if test="publishingDepartment != null">publishing_department,</if>
+            <if test="policyCategory != null">policy_category,</if>
+            <if test="applicableIndustries != null">applicable_industries,</if>
+            <if test="publishTime != null">publish_time,</if>
+            <if test="state != null and state != ''">state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="appendixUrl != null">appendix_url,</if>
+            <if test="publishUnit != null">publish_unit,</if>
+            <if test="publisher != null">publisher,</if>
+            <if test="meansUrl != null">means_url,</if>
+            <if test="itemStatus != null">item_status,</if>
+            <if test="tagIds != null">tag_ids,</if>
+            <if test="publishStatus != null">publish_status,</if>
+            <if test="validStatus != null">valid_status,</if>
+            <if test="validDate != null">valid_date,</if>
+            <if test="applyForCash != null">apply_for_cash,</if>
+            <if test="redeemContact != null">redeem_contact,</if>
+            <if test="redeemContactPhone != null">redeem_contact_phone,</if>
+            <if test="trade != null">trade,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="region != null">region,</if>
+            <if test="street != null">street,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tittle != null and tittle != ''">#{tittle},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="policyLevel != null and policyLevel != ''">#{policyLevel},</if>
+            <if test="publishingDepartment != null">#{publishingDepartment},</if>
+            <if test="policyCategory != null">#{policyCategory},</if>
+            <if test="applicableIndustries != null">#{applicableIndustries},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="state != null and state != ''">#{state},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="appendixUrl != null">#{appendixUrl},</if>
+            <if test="publishUnit != null">#{publishUnit},</if>
+            <if test="publisher != null">#{publisher},</if>
+            <if test="meansUrl != null">#{meansUrl},</if>
+            <if test="itemStatus != null">#{itemStatus},</if>
+            <if test="tagIds != null">#{tagIds},</if>
+            <if test="publishStatus != null">#{publishStatus},</if>
+            <if test="validStatus != null">#{validStatus},</if>
+            <if test="validDate != null">#{validDate},</if>
+            <if test="applyForCash != null">#{applyForCash},</if>
+            <if test="redeemContact != null">#{redeemContact},</if>
+            <if test="redeemContactPhone != null">#{redeemContactPhone},</if>
+            <if test="trade != null">#{trade},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="region != null">#{region},</if>
+            <if test="street != null">#{street},</if>
+        </trim>
+    </insert>
+
+    <update id="updateKyOriginalPolicy" parameterType="KyOriginalPolicy">
+        update ky_original_policy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tittle != null and tittle != ''">tittle = #{tittle},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="policyLevel != null and policyLevel != ''">policy_level = #{policyLevel},</if>
+            <if test="publishingDepartment != null">publishing_department = #{publishingDepartment},</if>
+            <if test="policyCategory != null">policy_category = #{policyCategory},</if>
+            <if test="applicableIndustries != null">applicable_industries = #{applicableIndustries},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="appendixUrl != null">appendix_url = #{appendixUrl},</if>
+            <if test="publishUnit != null">publish_unit = #{publishUnit},</if>
+            <if test="publisher != null">publisher = #{publisher},</if>
+            <if test="meansUrl != null">means_url = #{meansUrl},</if>
+            <if test="itemStatus != null">item_status = #{itemStatus},</if>
+            <if test="tagIds != null">tag_ids = #{tagIds},</if>
+            <if test="publishStatus != null">publish_status = #{publishStatus},</if>
+            <if test="validStatus != null">valid_status = #{validStatus},</if>
+            <if test="validDate != null">valid_date = #{validDate},</if>
+            <if test="applyForCash != null">apply_for_cash = #{applyForCash},</if>
+            <if test="redeemContact != null">redeem_contact = #{redeemContact},</if>
+            <if test="redeemContactPhone != null">redeem_contact_phone = #{redeemContactPhone},</if>
+            <if test="trade != null">trade = #{trade},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="region != null">region = #{region},</if>
+            <if test="street != null">street = #{street},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="deleteKyOriginalPolicyById" parameterType="Long">
+        delete from ky_original_policy where id = #{id}
+    </delete>
+
+    <delete id="deleteKyOriginalPolicyByIds" parameterType="String">
+        delete from ky_original_policy where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

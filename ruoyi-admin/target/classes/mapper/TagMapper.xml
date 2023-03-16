@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.TagMapper">
+    
+    <resultMap type="Tag" id="TagResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTagVo">
+        select id, name, create_by, create_time from ky_tag
+    </sql>
+
+    <select id="selectTagList" parameterType="Tag" resultMap="TagResult">
+        <include refid="selectTagVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTagById" parameterType="Long" resultMap="TagResult">
+        <include refid="selectTagVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectTagListByIds"   parameterType="long"  resultMap="TagResult">
+        <include refid="selectTagVo"/>
+        where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <insert id="insertTag" parameterType="Tag" useGeneratedKeys="true" keyProperty="id">
+        insert into ky_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTag" parameterType="Tag">
+        update ky_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTagById" parameterType="Long">
+        delete from ky_tag where id = #{id}
+    </delete>
+
+    <delete id="deleteTagByIds" parameterType="String">
+        delete from ky_tag where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

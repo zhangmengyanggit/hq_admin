@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.KyEnterpriseMapper">
+    
+    <resultMap type="KyEnterprise" id="KyEnterpriseResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="address"    column="address"    />
+        <result property="juridicalPerson"    column="juridical_person"    />
+        <result property="juridicalPersonPhone"    column="juridical_person_phone"    />
+        <result property="registrationTime"    column="registration_time"    />
+        <result property="registrationProvince"    column="registration_province"    />
+        <result property="registrationCity"    column="registration_city"    />
+        <result property="registrationRegion"    column="registration_region"    />
+        <result property="manageAddress"    column="manage_address"    />
+        <result property="socialUnifiedCreditCodeNumber"    column="social_unified_credit_code_number"    />
+        <result property="enterpriseNature"    column="enterprise_nature"    />
+        <result property="registrationType"    column="registration_type"    />
+        <result property="totalAssetsRange"    column="total_assets_range"    />
+        <result property="registeredCapital"    column="registered_capital"    />
+        <result property="seeAlso"    column="see_also"    />
+        <result property="officialWebsite"    column="official_website"    />
+        <result property="enterpriseMailbox"    column="enterprise_mailbox"    />
+        <result property="industryOneLevel"    column="industry_one_level"    />
+        <result property="industryTwoLevel"    column="industry_two_level"    />
+        <result property="numberOfEmployees"    column="number_of_employees"    />
+        <result property="businessLicenseUrl"    column="business_license_url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="tagIds"    column="tag_ids"    />
+        <result property="linkman"    column="linkman"    />
+        <result property="linkmanPhone"    column="linkman_phone"    />
+        <result property="businessTerm"    column="business_term"    />
+        <result property="natureOfBusiness"    column="nature_of_business"    />
+        <result property="registrationAuthority"    column="registration_authority"    />
+        <result property="registrationStreet"    column="registration_street"    />
+        <result property="mainBusiness"    column="main_business"    />
+        <result property="complianceWithPolicyInformation"    column="compliance_with_policy_information"    />
+        <result property="registrationDate"    column="registration_date"    />
+    </resultMap>
+
+    <sql id="selectKyEnterpriseVo">
+        select id,main_business,registration_date,compliance_with_policy_information,registration_authority,registration_street, nature_of_business,name,business_term,linkman_phone,linkman, address, juridical_person, juridical_person_phone, registration_time, registration_province, registration_city, registration_region, manage_address, social_unified_credit_code_number, enterprise_nature, registration_type, total_assets_range, registered_capital, see_also, official_website, enterprise_mailbox, industry_one_level, industry_two_level, number_of_employees, business_license_url, create_time, create_by,tag_ids from ky_enterprise
+    </sql>
+
+    <select id="selectKyEnterpriseList" parameterType="KyEnterprise" resultMap="KyEnterpriseResult">
+        <include refid="selectKyEnterpriseVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+            <if test="juridicalPerson != null  and juridicalPerson != ''"> and juridical_person like concat('%', #{juridicalPerson}, '%')</if>
+            <if test="juridicalPersonPhone != null  and juridicalPersonPhone != ''"> and juridical_person_phone like concat('%', #{juridicalPersonPhone}, '%')</if>
+            <if test="enterpriseNature != null  and enterpriseNature != ''"> and enterprise_nature = #{enterpriseNature}</if>
+            <if test="numberOfEmployees != null "> and number_of_employees = #{numberOfEmployees}</if>
+            <if test="businessLicenseUrl != null  and businessLicenseUrl != ''"> and business_license_url = #{businessLicenseUrl}</if>
+            <if test="totalAssetsRange != null  and totalAssetsRange != ''"> and total_assets_range = #{totalAssetsRange}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(registration_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(registration_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="industryOneLevel != null  and industryOneLevel != ''"> and industry_one_level = #{industryOneLevel}</if>
+            <if  test="tagIds!=null and tagIds!=''">
+
+                 <foreach collection="tagIds.split(',')" item="tagId"
+                          index="index" open=" and (" separator=" or " close=")">
+                     FIND_IN_SET(#{tagId},tag_ids)
+                 </foreach>
+            </if>
+            <if test="registrationRegion!=null and registrationRegion!=''" >
+                and registration_region = #{registrationRegion}
+                and business_term >=  CURDATE()
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectKyEnterpriseById" parameterType="Long" resultMap="KyEnterpriseResult">
+        <include refid="selectKyEnterpriseVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectKyEnterpriseIds"   parameterType="KyEnterprise" resultType="Long">
+        select   id  from  ky_enterprise
+        where 1=1
+
+        <foreach collection="tagIds.split(',')" item="tagId"
+                 index="index" open=" and (" separator=" or " close=")">
+            FIND_IN_SET(#{tagId},tag_ids)
+        </foreach>
+        and business_term >= CURDATE()
+        and  registration_region=#{registrationRegion}
+    </select>
+    <insert id="insertKyEnterprise" parameterType="KyEnterprise" useGeneratedKeys="true" keyProperty="id">
+        insert into ky_enterprise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="address != null">address,</if>
+            <if test="juridicalPerson != null">juridical_person,</if>
+            <if test="juridicalPersonPhone != null">juridical_person_phone,</if>
+            <if test="registrationTime != null">registration_time,</if>
+            <if test="registrationProvince != null">registration_province,</if>
+            <if test="registrationCity != null">registration_city,</if>
+            <if test="registrationRegion != null">registration_region,</if>
+            <if test="manageAddress != null">manage_address,</if>
+            <if test="socialUnifiedCreditCodeNumber != null">social_unified_credit_code_number,</if>
+            <if test="enterpriseNature != null">enterprise_nature,</if>
+            <if test="registrationType != null">registration_type,</if>
+            <if test="totalAssetsRange != null">total_assets_range,</if>
+            <if test="registeredCapital != null">registered_capital,</if>
+            <if test="seeAlso != null">see_also,</if>
+            <if test="officialWebsite != null">official_website,</if>
+            <if test="enterpriseMailbox != null">enterprise_mailbox,</if>
+            <if test="industryOneLevel != null">industry_one_level,</if>
+            <if test="industryTwoLevel != null">industry_two_level,</if>
+            <if test="numberOfEmployees != null">number_of_employees,</if>
+            <if test="businessLicenseUrl != null">business_license_url,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="tagIds != null">tag_ids,</if>
+            <if test="linkman != null">linkman,</if>
+            <if test="linkmanPhone != null">linkman_phone,</if>
+            <if test="businessTerm != null">business_term,</if>
+            <if test="natureOfBusiness != null">nature_of_business,</if>
+            <if test="registrationAuthority != null">registration_authority,</if>
+            <if test="registrationStreet != null">registration_street,</if>
+            <if test="mainBusiness != null">main_business,</if>
+            <if test="complianceWithPolicyInformation != null">compliance_with_policy_information,</if>
+            <if test="registrationDate != null">registration_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="address != null">#{address},</if>
+            <if test="juridicalPerson != null">#{juridicalPerson},</if>
+            <if test="juridicalPersonPhone != null">#{juridicalPersonPhone},</if>
+            <if test="registrationTime != null">#{registrationTime},</if>
+            <if test="registrationProvince != null">#{registrationProvince},</if>
+            <if test="registrationCity != null">#{registrationCity},</if>
+            <if test="registrationRegion != null">#{registrationRegion},</if>
+            <if test="manageAddress != null">#{manageAddress},</if>
+            <if test="socialUnifiedCreditCodeNumber != null">#{socialUnifiedCreditCodeNumber},</if>
+            <if test="enterpriseNature != null">#{enterpriseNature},</if>
+            <if test="registrationType != null">#{registrationType},</if>
+            <if test="totalAssetsRange != null">#{totalAssetsRange},</if>
+            <if test="registeredCapital != null">#{registeredCapital},</if>
+            <if test="seeAlso != null">#{seeAlso},</if>
+            <if test="officialWebsite != null">#{officialWebsite},</if>
+            <if test="enterpriseMailbox != null">#{enterpriseMailbox},</if>
+            <if test="industryOneLevel != null">#{industryOneLevel},</if>
+            <if test="industryTwoLevel != null">#{industryTwoLevel},</if>
+            <if test="numberOfEmployees != null">#{numberOfEmployees},</if>
+            <if test="businessLicenseUrl != null">#{businessLicenseUrl},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="tagIds != null">#{tagIds},</if>
+            <if test="linkman != null">#{linkman},</if>
+            <if test="linkmanPhone != null">#{linkmanPhone},</if>
+            <if test="businessTerm != null">#{businessTerm},</if>
+            <if test="natureOfBusiness != null">#{natureOfBusiness},</if>
+            <if test="registrationAuthority != null">#{registrationAuthority},</if>
+            <if test="registrationStreet != null">#{registrationStreet},</if>
+            <if test="mainBusiness != null">#{mainBusiness},</if>
+            <if test="complianceWithPolicyInformation != null">#{complianceWithPolicyInformation},</if>
+            <if test="registrationDate != null">#{registrationDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKyEnterprise" parameterType="KyEnterprise">
+        update ky_enterprise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="juridicalPerson != null">juridical_person = #{juridicalPerson},</if>
+            <if test="juridicalPersonPhone != null">juridical_person_phone = #{juridicalPersonPhone},</if>
+            <if test="registrationTime != null">registration_time = #{registrationTime},</if>
+            <if test="registrationProvince != null">registration_province = #{registrationProvince},</if>
+            <if test="registrationCity != null">registration_city = #{registrationCity},</if>
+            <if test="registrationRegion != null">registration_region = #{registrationRegion},</if>
+            <if test="manageAddress != null">manage_address = #{manageAddress},</if>
+            <if test="socialUnifiedCreditCodeNumber != null">social_unified_credit_code_number = #{socialUnifiedCreditCodeNumber},</if>
+            <if test="enterpriseNature != null">enterprise_nature = #{enterpriseNature},</if>
+            <if test="registrationType != null">registration_type = #{registrationType},</if>
+            <if test="totalAssetsRange != null">total_assets_range = #{totalAssetsRange},</if>
+            <if test="registeredCapital != null">registered_capital = #{registeredCapital},</if>
+            <if test="seeAlso != null">see_also = #{seeAlso},</if>
+            <if test="officialWebsite != null">official_website = #{officialWebsite},</if>
+            <if test="enterpriseMailbox != null">enterprise_mailbox = #{enterpriseMailbox},</if>
+            <if test="industryOneLevel != null">industry_one_level = #{industryOneLevel},</if>
+            <if test="industryTwoLevel != null">industry_two_level = #{industryTwoLevel},</if>
+            <if test="numberOfEmployees != null">number_of_employees = #{numberOfEmployees},</if>
+            <if test="businessLicenseUrl != null">business_license_url = #{businessLicenseUrl},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="tagIds != null">tag_ids=#{tagIds},</if>
+            <if test="linkman != null">linkman=#{linkman},</if>
+            <if test="linkmanPhone != null">linkman_phone=#{linkmanPhone},</if>
+            <if test="businessTerm != null">business_term=#{businessTerm},</if>
+            <if test="natureOfBusiness != null">nature_of_business=#{natureOfBusiness},</if>
+            <if test="registrationAuthority != null">registration_authority=#{registrationAuthority},</if>
+            <if test="registrationStreet != null">registration_street=#{registrationStreet},</if>
+            <if test="mainBusiness != null">main_business=#{mainBusiness},</if>
+            <if test="complianceWithPolicyInformation != null">compliance_with_policy_information=#{complianceWithPolicyInformation},</if>
+            <if test="registrationDate != null">registration_date=#{registrationDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteKyEnterpriseById" parameterType="Long">
+        delete from ky_enterprise where id = #{id}
+    </delete>
+
+    <delete id="deleteKyEnterpriseByIds" parameterType="String">
+        delete from ky_enterprise where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
