@@ -1,6 +1,8 @@
 package com.ruoyi.web.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.web.domain.KyOriginalPolicy;
 
 /**
@@ -58,4 +60,8 @@ public interface KyOriginalPolicyMapper
      * @return 结果
      */
     public int deleteKyOriginalPolicyByIds(Long[] ids);
+
+    Long selectKyOriginalPolicyCount(KyOriginalPolicy originalPolicy);
+
+    Long selectCountByParams(Map<String, Object> paramsMap);
 }

@@ -125,7 +125,70 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
+        <!-- Apache Http Begin -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.fastjsonDependency</groupId>
+            <artifactId>fastjson</artifactId>
+            <scope>system</scope>
+            <version>0.0.1-SNAPSHOT</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/fastjson-1.2.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.HbzzApiDependency</groupId>
+            <artifactId>HbzzApi</artifactId>
+            <scope>system</scope>
+            <version>0.0.1-SNAPSHOT</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/HbzzApi.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sign_v1.4.jarDependency</groupId>
+            <artifactId>sign_v1.4.jar</artifactId>
+            <scope>system</scope>
+            <version>0.0.1-SNAPSHOT</version>
+            <systemPath>${project.basedir}/src/main/resources/lib/sign_v1.4.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.11</version>
+        </dependency>
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.doc</artifactId>
+            <version>11.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.pdf</artifactId>
+            <version>9.3.6</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ofdrw</groupId>
+            <artifactId>ofdrw-converter</artifactId>
+            <version>2.0.2</version>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>com.e-iceblue</id>
+            <name>e-iceblue</name>
+            <url>https://repo.e-iceblue.cn/repository/maven-public/</url>
+        </repository>
+      </repositories>
 
 </project>

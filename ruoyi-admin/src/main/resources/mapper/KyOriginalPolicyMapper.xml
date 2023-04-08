@@ -71,14 +71,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 and date_format(valid_date,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
+            <if test="publishingDepartment!=null and publishingDepartment!=''">
+             and  publishing_department=#{publishingDepartment}
+            </if>
         </where>
+        <if test="limit!=null">
+          order by id  desc
+            limit #{limit}
+        </if>
     </select>
 
     <select id="selectKyOriginalPolicyById" parameterType="Long" resultMap="KyOriginalPolicyResult">
         <include refid="selectKyOriginalPolicyVo"/>
         where id = #{id}
     </select>
+    <select id="selectKyOriginalPolicyCount" parameterType="KyOriginalPolicy" resultType="Long">
+       select count(1) from  ky_original_policy
+       <where>
+           <if test="publishingDepartment!=null">
+            and publishing_department=#{publishingDepartment}
+           </if>
+           <if test="validStatus!=null">
+              and valid_status=#{validStatus}
+           </if>
+           <if test="publishStatus!=null">
+               and publish_status=#{publishStatus}
+           </if>
+           <if test="tittle!=null">
+               and tittle=#{tittle}
+           </if>
+       </where>
+    </select>
 
+    <select id="selectCountByParams" parameterType="Map" resultType="Long">
+        select count(1) from  ky_original_policy
+        <where>
+            <if test="publishStatus!=null">
+                and publish_status=#{publishStatus}
+            </if>
+            <if test="ids!=null">
+                and  id in
+                <foreach item="id" collection="ids" open="(" separator="," close=")">
+                #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
     <insert id="insertKyOriginalPolicy" parameterType="KyOriginalPolicy" useGeneratedKeys="true" keyProperty="id">
         insert into ky_original_policy
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -171,6 +209,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="city != null">city = #{city},</if>
             <if test="region != null">region = #{region},</if>
             <if test="street != null">street = #{street},</if>
+            <if test="md5Hash != null">md5_hash = #{md5Hash},</if>
         </trim>
         where id = #{id}
     </update>

@@ -76,12 +76,12 @@ public class KyEnterprise extends BaseEntity
     private String totalAssetsRange;
 
     /** 注册资本(万元) */
-    @Excel(name = "注册资本(万元)",cellType = Excel.ColumnType.NUMERIC)
-    private Long registeredCapital;
+    @Excel(name = "注册资本(万元)")
+    private String registeredCapital;
 
     /** 实收资本(万元) */
-    @Excel(name = "实收资本(万元)",cellType = Excel.ColumnType.NUMERIC)
-    private Long seeAlso;
+    @Excel(name = "实收资本(万元)")
+    private String seeAlso;
 
     /** 官方网站(没有写无) */
     @Excel(name = "官方网站(没有写无)")
@@ -101,8 +101,8 @@ public class KyEnterprise extends BaseEntity
 
     /** 在职人数
     */
-    @Excel(name = "在职人数",cellType = Excel.ColumnType.NUMERIC)
-    private Long numberOfEmployees;
+    @Excel(name = "在职人数")
+    private String numberOfEmployees;
 
     /** 营业执照文件地址 */
     private String businessLicenseUrl;
@@ -115,8 +115,15 @@ public class KyEnterprise extends BaseEntity
     private String  linkmanPhone;
     /** 营业期限 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "营业期限", width = 30, dateFormat = "yyyy-MM-dd")
+    //@Excel(name = "营业期限", width = 30, dateFormat = "yyyy-MM-dd")
     private Date businessTerm;
+    /** 营业期限 */
+    @Excel(name = "营业期限", width = 30)
+    private String businessTermStr;
+    /** 营业期限开始时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    //@Excel(name = "营业期限开始时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date businessTermStart;
     /** 经营范围 */
     @Excel(name = "经营范围")
     private String  natureOfBusiness;
@@ -137,9 +144,59 @@ public class KyEnterprise extends BaseEntity
     @Excel(name = "符合政策信息")
     private String complianceWithPolicyInformation;
 
+    /** 开户银行 */
+    @Excel(name = "开户银行")
+    private String bankAccounts;
+
+    /** 银行卡号 */
+    @Excel(name = "银行卡号")
+    private String bankCardNumber;
+    /** 身份证上传地址 */
+    private String identityCardUrl;
+
     private  Boolean isSelected=false;
     private  Boolean disabled=true;
     private Long originalpolicyId;
+
+    public String getBusinessTermStr() {
+        return businessTermStr;
+    }
+
+    public void setBusinessTermStr(String businessTermStr) {
+        this.businessTermStr = businessTermStr;
+    }
+
+    public String getIdentityCardUrl() {
+        return identityCardUrl;
+    }
+
+    public void setIdentityCardUrl(String identityCardUrl) {
+        this.identityCardUrl = identityCardUrl;
+    }
+
+    public Date getBusinessTermStart() {
+        return businessTermStart;
+    }
+
+    public void setBusinessTermStart(Date businessTermStart) {
+        this.businessTermStart = businessTermStart;
+    }
+
+    public String getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void setBankAccounts(String bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+    public String getBankCardNumber() {
+        return bankCardNumber;
+    }
+
+    public void setBankCardNumber(String bankCardNumber) {
+        this.bankCardNumber = bankCardNumber;
+    }
 
     public Long getOriginalpolicyId() {
         return originalpolicyId;
@@ -230,6 +287,7 @@ public class KyEnterprise extends BaseEntity
         this.linkman = linkman;
     }
     @NotBlank(message= "联系人电话不能为空")
+    @Size(min = 11, max = 12, message = "手机号码长度不能超过12个字符")
     public String getLinkmanPhone() {
         return linkmanPhone;
     }
@@ -286,8 +344,7 @@ public class KyEnterprise extends BaseEntity
     {
         this.juridicalPersonPhone = juridicalPersonPhone;
     }
-    @NotBlank(message= "企业法人电话不能为空")
-    @Size(min = 11, max = 11, message = "手机号码长度只能是11个字符")
+
     public String getJuridicalPersonPhone() 
     {
         return juridicalPersonPhone;
@@ -359,7 +416,7 @@ public class KyEnterprise extends BaseEntity
     {
         this.registrationType = registrationType;
     }
-    @NotBlank(message= "注册街道不能为空")
+    //@NotBlank(message= "注册街道不能为空")
     public String getRegistrationType() 
     {
         return registrationType;
@@ -373,21 +430,21 @@ public class KyEnterprise extends BaseEntity
     {
         return totalAssetsRange;
     }
-    public void setRegisteredCapital(Long registeredCapital) 
+    public void setRegisteredCapital(String registeredCapital)
     {
         this.registeredCapital = registeredCapital;
     }
 
-    public Long getRegisteredCapital() 
+    public String getRegisteredCapital()
     {
         return registeredCapital;
     }
-    public void setSeeAlso(Long seeAlso) 
+    public void setSeeAlso(String seeAlso)
     {
         this.seeAlso = seeAlso;
     }
 
-    public Long getSeeAlso() 
+    public String getSeeAlso()
     {
         return seeAlso;
     }
@@ -427,12 +484,12 @@ public class KyEnterprise extends BaseEntity
     {
         return industryTwoLevel;
     }
-    public void setNumberOfEmployees(Long numberOfEmployees) 
+    public void setNumberOfEmployees(String numberOfEmployees)
     {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public Long getNumberOfEmployees() 
+    public String getNumberOfEmployees()
     {
         return numberOfEmployees;
     }

@@ -1,6 +1,7 @@
 package com.ruoyi.web.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.web.domain.KyOriginalPolicy;
@@ -70,4 +71,8 @@ public interface IKyOriginalPolicyService
 
 
     AjaxResult publishByenterpriseAndIds(String ids, Long originalpolicyId);
+
+    Long selectKyOriginalPolicyCount(KyOriginalPolicy originalPolicy);
+
+    Long selectCountByParams(Map<String, Object> paramsMap);
 }

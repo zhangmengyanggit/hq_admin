@@ -114,7 +114,25 @@ public class KyOriginalPolicy extends BaseEntity
     private Integer region;
     /** 街道 */
     private Integer street;
+    private Long limit;
+    /** 政策id解密后的密文 */
+    private String md5Hash;
 
+    public String getMd5Hash() {
+        return md5Hash;
+    }
+
+    public void setMd5Hash(String md5Hash) {
+        this.md5Hash = md5Hash;
+    }
+
+    public Long getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Long limit) {
+        this.limit = limit;
+    }
 
     public Integer getProvince() {
         return province;

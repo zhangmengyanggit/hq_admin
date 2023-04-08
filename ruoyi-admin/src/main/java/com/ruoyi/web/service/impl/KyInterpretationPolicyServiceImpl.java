@@ -8,6 +8,7 @@ import com.ruoyi.web.mapper.KyInterpretationPolicyMapper;
 import com.ruoyi.web.service.IKyInterpretationPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 政策解读Service业务层处理
@@ -52,6 +53,7 @@ public class KyInterpretationPolicyServiceImpl implements IKyInterpretationPolic
      * @return 结果
      */
     @Override
+    @Transactional
     public int insertKyInterpretationPolicy(KyInterpretationPolicy kyInterpretationPolicy)
     {
         kyInterpretationPolicy.setCreateTime(DateUtils.getNowDate());
@@ -65,6 +67,7 @@ public class KyInterpretationPolicyServiceImpl implements IKyInterpretationPolic
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateKyInterpretationPolicy(KyInterpretationPolicy kyInterpretationPolicy)
     {
         return kyInterpretationPolicyMapper.updateKyInterpretationPolicy(kyInterpretationPolicy);
@@ -77,6 +80,7 @@ public class KyInterpretationPolicyServiceImpl implements IKyInterpretationPolic
      * @return 结果
      */
     @Override
+    @Transactional
     public int deleteKyInterpretationPolicyByIds(Long[] ids)
     {
         return kyInterpretationPolicyMapper.deleteKyInterpretationPolicyByIds(ids);
@@ -89,6 +93,7 @@ public class KyInterpretationPolicyServiceImpl implements IKyInterpretationPolic
      * @return 结果
      */
     @Override
+    @Transactional
     public int deleteKyInterpretationPolicyById(Long id)
     {
         return kyInterpretationPolicyMapper.deleteKyInterpretationPolicyById(id);

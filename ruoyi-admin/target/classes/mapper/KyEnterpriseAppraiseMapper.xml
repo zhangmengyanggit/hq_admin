@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.KyEnterpriseAppraiseMapper">
+    
+    <resultMap type="KyEnterpriseAppraise" id="KyEnterpriseAppraiseResult">
+        <result property="id"    column="id"    />
+        <result property="enterpriseId"    column="enterprise_id"    />
+        <result property="appraiseContent"    column="appraise_content"    />
+        <result property="appraiseTime"    column="appraise_time"    />
+        <result property="status"    column="status"    />
+        <result property="enterpriseProjectDeclarationId"    column="enterprise_project_declaration_id"    />
+        <result property="starRating"    column="star_rating"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="replyContent"    column="reply_content"    />
+        <result property="irrigationDitch"    column="irrigation_ditch"    />
+        <result property="replyTime"    column="reply_time"    />
+        <result property="replyDepartment"    column="reply_department"    />
+        <result property="sysUserEnterpriseId"    column="sys_user_enterprise_id"    />
+        <result property="appraiseEnterpriseName"    column="enterpriseName"    />
+        <result property="replyStatus"    column="reply_status"    />
+    </resultMap>
+
+    <sql id="selectKyEnterpriseAppraiseVo">
+        select ea.id, ea.enterprise_id,ea.reply_status, ea.appraise_content, ea.appraise_time, ea.status, ea.enterprise_project_declaration_id, ea.star_rating, ea.audit_status, ea.reply_content, ea.irrigation_ditch, ea.reply_time, ea.reply_department, ea.sys_user_enterprise_id,e.name as enterpriseName from ky_enterprise_appraise  ea join
+        ky_enterprise e  on  e.id=ea.enterprise_id
+    </sql>
+
+    <select id="selectKyEnterpriseAppraiseList" parameterType="KyEnterpriseAppraise" resultMap="KyEnterpriseAppraiseResult">
+        <include refid="selectKyEnterpriseAppraiseVo"/>
+        <where>  
+            <if test="params.beginAppraiseTime != null and params.beginAppraiseTime != '' and params.endAppraiseTime != null and params.endAppraiseTime != ''"> and ea.appraise_time between #{params.beginAppraiseTime} and #{params.endAppraiseTime}</if>
+            <if test="status != null "> and ea.status = #{status}</if>
+            <if test="starRating != null "> and ea.star_rating = #{starRating}</if>
+            <if test="auditStatus != null "> and ea.audit_status = #{auditStatus}</if>
+            <if test="params.beginReplyTime != null and params.beginReplyTime != '' and params.endReplyTime != null and params.endReplyTime != ''"> and ea.reply_time between #{params.beginReplyTime} and #{params.endReplyTime}</if>
+            <if test="replyDepartment != null  and replyDepartment != ''"> and ea.reply_department = #{replyDepartment}</if>
+            <if test="replyStatus != null "> and ea.reply_status = #{replyStatus}</if>
+
+        </where>
+    </select>
+
+    <select id="selectKyEnterpriseAppraiseById" parameterType="Long" resultMap="KyEnterpriseAppraiseResult">
+        <include refid="selectKyEnterpriseAppraiseVo"/>
+        where ea.id = #{id}
+    </select>
+        <select id="selectKyEnterpriseAppraiseCountByParasm" parameterType="Map" resultType="Long">
+         select  count(1)  from   ky_enterprise_appraise
+         <where>
+             <if test="replyDepartment != null  and replyDepartment != ''"> and reply_department = #{replyDepartment}</if>
+             <if test="status != null "> and status = #{status}</if>
+             <if test="starRating != null "> and star_rating = #{starRating}</if>
+             <if test="replyStatus != null "> and reply_status = #{replyStatus}</if>
+         </where>
+        </select>
+    <insert id="insertKyEnterpriseAppraise" parameterType="KyEnterpriseAppraise" useGeneratedKeys="true" keyProperty="id">
+        insert into ky_enterprise_appraise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="enterpriseId != null">enterprise_id,</if>
+            <if test="appraiseContent != null">appraise_content,</if>
+            <if test="appraiseTime != null">appraise_time,</if>
+            <if test="status != null">status,</if>
+            <if test="enterpriseProjectDeclarationId != null">enterprise_project_declaration_id,</if>
+            <if test="starRating != null">star_rating,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="replyContent != null">reply_content,</if>
+            <if test="irrigationDitch != null">irrigation_ditch,</if>
+            <if test="replyTime != null">reply_time,</if>
+            <if test="replyDepartment != null">reply_department,</if>
+            <if test="sysUserEnterpriseId != null">sys_user_enterprise_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="enterpriseId != null">#{enterpriseId},</if>
+            <if test="appraiseContent != null">#{appraiseContent},</if>
+            <if test="appraiseTime != null">#{appraiseTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="enterpriseProjectDeclarationId != null">#{enterpriseProjectDeclarationId},</if>
+            <if test="starRating != null">#{starRating},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="replyContent != null">#{replyContent},</if>
+            <if test="irrigationDitch != null">#{irrigationDitch},</if>
+            <if test="replyTime != null">#{replyTime},</if>
+            <if test="replyDepartment != null">#{replyDepartment},</if>
+            <if test="sysUserEnterpriseId != null">#{sysUserEnterpriseId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKyEnterpriseAppraise" parameterType="KyEnterpriseAppraise">
+        update ky_enterprise_appraise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="enterpriseId != null">enterprise_id = #{enterpriseId},</if>
+            <if test="appraiseContent != null">appraise_content = #{appraiseContent},</if>
+            <if test="appraiseTime != null">appraise_time = #{appraiseTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="enterpriseProjectDeclarationId != null">enterprise_project_declaration_id = #{enterpriseProjectDeclarationId},</if>
+            <if test="starRating != null">star_rating = #{starRating},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="replyContent != null">reply_content = #{replyContent},</if>
+            <if test="irrigationDitch != null">irrigation_ditch = #{irrigationDitch},</if>
+            <if test="replyTime != null">reply_time = #{replyTime},</if>
+            <if test="replyDepartment != null">reply_department = #{replyDepartment},</if>
+            <if test="sysUserEnterpriseId != null">sys_user_enterprise_id = #{sysUserEnterpriseId},</if>
+            <if test="replyStatus != null">reply_status = #{replyStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

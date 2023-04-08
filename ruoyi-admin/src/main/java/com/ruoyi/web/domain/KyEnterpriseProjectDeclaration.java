@@ -1,9 +1,12 @@
 package com.ruoyi.web.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 企业申请项目对象 ky_enterprise_project_declaration
@@ -70,6 +73,69 @@ public class KyEnterpriseProjectDeclaration extends BaseEntity
     /** 复审申报备注 */
     @Excel(name = "复审申报备注")
     private String lastAuditReason;
+    /** 部门评价回复 */
+    @Excel(name = "部门评价回复")
+    private String appraiseAnswer;
+    /** 审核人电话 */
+    private String  reviewerPhone;
+    /** 审核人*/
+    private String  reviewer;
+    /** 评价时间*/
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date appraiseTime;
+    /** 部门回复时间时间*/
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date appraiseAnswerTime;
+    /** 驳回理由*/
+    private String failureReason;
+
+    public String getFailureReason() {
+        return failureReason;
+    }
+
+    public void setFailureReason(String failureReason) {
+        this.failureReason = failureReason;
+    }
+
+    public Date getAppraiseTime() {
+        return appraiseTime;
+    }
+
+    public void setAppraiseTime(Date appraiseTime) {
+        this.appraiseTime = appraiseTime;
+    }
+
+    public Date getAppraiseAnswerTime() {
+        return appraiseAnswerTime;
+    }
+
+    public void setAppraiseAnswerTime(Date appraiseAnswerTime) {
+        this.appraiseAnswerTime = appraiseAnswerTime;
+    }
+
+    public String getReviewerPhone() {
+        return reviewerPhone;
+    }
+
+    public void setReviewerPhone(String reviewerPhone) {
+        this.reviewerPhone = reviewerPhone;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public String getAppraiseAnswer() {
+        return appraiseAnswer;
+    }
+
+    public void setAppraiseAnswer(String appraiseAnswer) {
+        this.appraiseAnswer = appraiseAnswer;
+    }
 
     public String getReviewOfficer() {
         return reviewOfficer;

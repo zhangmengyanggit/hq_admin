@@ -1,9 +1,14 @@
 package com.ruoyi.web.controller.scienceandtechnology;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import com.ruoyi.web.domain.KyEnterprise;
+import com.ruoyi.web.domain.SysUserEnterprise;
+import com.ruoyi.web.service.IKyEnterpriseProjectDeclarationService;
 import com.ruoyi.web.service.IKyEnterpriseService;
+import com.ruoyi.web.service.ISysUserEnterpriseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +39,10 @@ public class KyEnterpriseController extends BaseController
 {
     @Autowired
     private IKyEnterpriseService kyEnterpriseService;
-
+    @Autowired
+    private  ISysUserEnterpriseService iSysUserEnterpriseService;
+    @Autowired
+    private IKyEnterpriseProjectDeclarationService kyEnterpriseProjectDeclarationService;
     /**
      * 查询企业列表
      */
@@ -78,6 +86,20 @@ public class KyEnterpriseController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody KyEnterprise kyEnterprise)
     {
+        //判断企业名称是否已存在
+        KyEnterprise kyEnterpriseCheck=new KyEnterprise();
+        kyEnterpriseCheck.setName(kyEnterprise.getName());
+        Long count=  kyEnterpriseService.selectKyEnterpriseCount(kyEnterpriseCheck);
+        if(count>0){
+            return  AjaxResult.error("企业名称已存在");
+        }
+        //判断社会统一信用代码号唯一性
+        kyEnterpriseCheck.setName(null);
+        kyEnterpriseCheck.setSocialUnifiedCreditCodeNumber(kyEnterprise.getSocialUnifiedCreditCodeNumber());
+        Long countSocialUnifiedCreditCodeNumber=  kyEnterpriseService.selectKyEnterpriseCount(kyEnterpriseCheck);
+        if(countSocialUnifiedCreditCodeNumber>0){
+            return  AjaxResult.error("统一社会信用代码已存在");
+        }
         return toAjax(kyEnterpriseService.insertKyEnterprise(kyEnterprise));
     }
 
@@ -89,6 +111,33 @@ public class KyEnterpriseController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody KyEnterprise kyEnterprise)
     {
+        //根据企业id查询企业信息
+        KyEnterprise enterpriseOrld=    kyEnterpriseService.selectKyEnterpriseById(kyEnterprise.getId());
+        KyEnterprise kyEnterpriseCheck=null;
+        if(enterpriseOrld!=null&&!kyEnterprise.getName().equals(enterpriseOrld.getName())){
+            //判断企业名称是否已存在
+            kyEnterpriseCheck =new KyEnterprise();
+            kyEnterpriseCheck.setName(kyEnterprise.getName());
+            Long count=  kyEnterpriseService.selectKyEnterpriseCount(kyEnterpriseCheck);
+            if(count>0){
+                return  AjaxResult.error("企业名称已存在");
+            }
+        }
+
+        if(enterpriseOrld!=null&&!kyEnterprise.getSocialUnifiedCreditCodeNumber().equals(enterpriseOrld.getSocialUnifiedCreditCodeNumber())){
+            //判断社会统一信用代码号唯一性
+            kyEnterpriseCheck =new KyEnterprise();
+            kyEnterpriseCheck.setSocialUnifiedCreditCodeNumber(kyEnterprise.getSocialUnifiedCreditCodeNumber());
+            Long countSocialUnifiedCreditCodeNumber=  kyEnterpriseService.selectKyEnterpriseCount(kyEnterpriseCheck);
+            if(countSocialUnifiedCreditCodeNumber>0){
+                return  AjaxResult.error("统一社会信用代码已存在");
+            }
+        }
+
+
+            //企业联系人电话更改则更新前端用户登录名称
+            iSysUserEnterpriseService.updateSysUserEnterpriseByEnterprise(enterpriseOrld,kyEnterprise);
+
         return toAjax(kyEnterpriseService.updateKyEnterprise(kyEnterprise));
     }
 
@@ -100,6 +149,13 @@ public class KyEnterpriseController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
+        //判断当前企业是否已经申请企业申请项目
+        Map<String, Object> paramsMap=new HashMap<>();
+        paramsMap.put("enterpriseIds",ids);
+        Long count=   kyEnterpriseProjectDeclarationService.selectCountByParams(paramsMap);
+        if(count>0){
+            return error("已经申请政策的企业无法删除");
+        }
         return toAjax(kyEnterpriseService.deleteKyEnterpriseByIds(ids));
     }
 

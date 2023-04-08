@@ -24,6 +24,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.core.page.TableDataInfo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,10 @@ public class KyOriginalPolicyController extends BaseController
     public TableDataInfo list(KyOriginalPolicy kyOriginalPolicy)
     {
         startPage();
+        //超级管理员看全部，各部门看自己创建的政策
+       if(!SecurityUtils.isAdmin(SecurityUtils.getUserId())){
+           kyOriginalPolicy.setPublishingDepartment(SecurityUtils.getDeptId()+"");
+       }
         List<KyOriginalPolicy> list = kyOriginalPolicyService.selectKyOriginalPolicyList(kyOriginalPolicy);
         return getDataTable(list);
     }
@@ -84,6 +89,13 @@ public class KyOriginalPolicyController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody KyOriginalPolicy kyOriginalPolicy)
     {
+         //判断政策名称是否已存在
+        KyOriginalPolicy kyOriginalPolicyParams=new KyOriginalPolicy();
+        kyOriginalPolicyParams.setTittle(kyOriginalPolicy.getTittle());
+        Long count=kyOriginalPolicyService.selectKyOriginalPolicyCount(kyOriginalPolicyParams);
+        if(count>0){
+            return AjaxResult.error("政策标题已存在");
+        }
         kyOriginalPolicy.setCreateBy(SecurityUtils.getUsername());
         return toAjax(kyOriginalPolicyService.insertKyOriginalPolicy(kyOriginalPolicy));
     }
@@ -96,6 +108,17 @@ public class KyOriginalPolicyController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody KyOriginalPolicy kyOriginalPolicy)
     {
+        //判断政策标题是否修改，修改了判断是否存在其他政策标题
+        KyOriginalPolicy originalPolicy=  kyOriginalPolicyService.selectKyOriginalPolicyById(kyOriginalPolicy.getId());
+        if(originalPolicy!=null&&!originalPolicy.getTittle().equals(kyOriginalPolicy.getTittle())){
+            //判断政策名称是否已存在
+            KyOriginalPolicy kyOriginalPolicyParams=new KyOriginalPolicy();
+            kyOriginalPolicyParams.setTittle(kyOriginalPolicy.getTittle());
+            Long count=kyOriginalPolicyService.selectKyOriginalPolicyCount(kyOriginalPolicyParams);
+            if(count>0){
+                return AjaxResult.error("政策标题已存在");
+            }
+        }
         return toAjax(kyOriginalPolicyService.updateKyOriginalPolicy(kyOriginalPolicy));
     }
 
@@ -107,6 +130,14 @@ public class KyOriginalPolicyController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
+        //已经发布的政策无法删除
+        Map<String,Object>  paramsMap=new HashMap<>();
+        paramsMap.put("publishStatus",2);
+        paramsMap.put("ids",ids);
+        Long count =kyOriginalPolicyService.selectCountByParams(paramsMap);
+        if (count>0){
+            return error("已发布政策不能删除");
+        }
         return toAjax(kyOriginalPolicyService.deleteKyOriginalPolicyByIds(ids));
     }
 

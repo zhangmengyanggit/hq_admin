@@ -60,7 +60,20 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
-
+        <!-- 系統-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,24 +84,30 @@
                 <version>2.1.1.RELEASE</version>
                 <configuration>
                     <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <executable>true</executable>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
+                            <goal>build-info</goal>
                             <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-            <plugin>   
-                <groupId>org.apache.maven.plugins</groupId>   
-                <artifactId>maven-war-plugin</artifactId>   
-                <version>3.1.0</version>   
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <warName>${project.artifactId}</warName>
-                </configuration>   
-           </plugin>   
+
+                </configuration>
+           </plugin>
+
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>

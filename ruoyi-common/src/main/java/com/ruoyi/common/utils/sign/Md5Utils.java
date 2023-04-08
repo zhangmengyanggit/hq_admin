@@ -13,8 +13,13 @@ import org.slf4j.LoggerFactory;
 public class Md5Utils
 {
     private static final Logger log = LoggerFactory.getLogger(Md5Utils.class);
-
-    private static byte[] md5(String s)
+    /**
+     * Md5加密 返回byte[]
+     *
+     * @param s
+     * @return
+     */
+    public static byte[] md5(String s)
     {
         MessageDigest algorithm;
         try
@@ -32,7 +37,13 @@ public class Md5Utils
         return null;
     }
 
-    private static final String toHex(byte hash[])
+    /**
+     * byte[]解密 返回string
+     *
+     * @param hash
+     * @return
+     */
+    public static final String toHex(byte hash[])
     {
         if (hash == null)
         {
@@ -51,7 +62,12 @@ public class Md5Utils
         }
         return buf.toString();
     }
-
+    /**
+     * hash加密
+     *
+     * @param s
+     * @return
+     */
     public static String hash(String s)
     {
         try
@@ -63,5 +79,16 @@ public class Md5Utils
             log.error("not supported charset...{}", e);
             return s;
         }
+    }
+
+    public static void main(String[] args) {
+        String a = "7";
+        byte[] bytes = md5(a);
+        System.out.println(bytes);
+        String s = toHex(bytes);
+        System.out.println(s);
+        String hash = hash(a);
+        System.out.println(hash);
+
     }
 }

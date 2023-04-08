@@ -1,6 +1,7 @@
 package com.ruoyi.web.service;
 
 import com.ruoyi.web.domain.KyEnterpriseProjectDeclaration;
+import com.ruoyi.web.vo.KyEnterpriseProjectDeclarationVo;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface IKyEnterpriseProjectDeclarationService
      * @param id 企业申请项目主键
      * @return 企业申请项目
      */
-    public KyEnterpriseProjectDeclaration selectKyEnterpriseProjectDeclarationById(Long id);
+    public KyEnterpriseProjectDeclarationVo selectKyEnterpriseProjectDeclarationById(Long id);
 
     /**
      * 查询企业申请项目列表
@@ -27,7 +28,7 @@ public interface IKyEnterpriseProjectDeclarationService
      * @param kyEnterpriseProjectDeclaration 企业申请项目
      * @return 企业申请项目集合
      */
-    public List<KyEnterpriseProjectDeclaration> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration);
+    public List<KyEnterpriseProjectDeclarationVo> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclarationVo kyEnterpriseProjectDeclaration);
 
     /**
      * 新增企业申请项目
@@ -45,21 +46,28 @@ public interface IKyEnterpriseProjectDeclarationService
      */
     public int updateKyEnterpriseProjectDeclaration(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration);
 
+
+
+
+    Long selectKyEnterpriseProjectDeclarationCountByParams(Map<String, Object> paramsMap);
     /**
-     * 批量删除企业申请项目
-     * 
+     * 批量审核企业申请项目
+     *
      * @param ids 需要删除的企业申请项目主键集合
      * @return 结果
      */
-    public int deleteKyEnterpriseProjectDeclarationByIds(Long[] ids);
+    public int auditKyEnterpriseProjectDeclarationByIds(Long[] ids,Integer status);
+
+    List<KyEnterpriseProjectDeclaration> selectList(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration);
 
     /**
-     * 删除企业申请项目信息
-     * 
-     * @param id 企业申请项目主键
+     * 受理企业申请项目
+     *
+     * @param ids 需要删除的企业申请项目主键集合
+     * @param status s
      * @return 结果
      */
-    public int deleteKyEnterpriseProjectDeclarationById(Long id);
+    public  int acceptKyEnterpriseProjectDeclarationByIds(Long[] ids,Integer status);
 
-    Long selectKyEnterpriseProjectDeclarationCountByParams(Map<String, Object> paramsMap);
+    Long selectCountByParams(Map<String, Object> paramsMap);
 }

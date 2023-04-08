@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
@@ -22,11 +23,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.validation.Validator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -74,7 +78,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
         List<KyEnterprise>  kyEnterprises=   kyEnterpriseMapper.selectKyEnterpriseList(kyEnterprise);
         if(StringUtils.isNotNull(kyEnterprise.getOriginalpolicyId())) {
             for (KyEnterprise enterprise:kyEnterprises) {
-                Map<String,Object> paramsMap=new HashMap();
+                Map<String,Object> paramsMap=new HashMap<String,Object>();
                 paramsMap.put("originalpolicyId",kyEnterprise.getOriginalpolicyId());
                 paramsMap.put("enterpriseId",enterprise.getId());
                 Long count=   iKyEnterpriseProjectDeclarationService.selectKyEnterpriseProjectDeclarationCountByParams(paramsMap);
@@ -83,6 +87,23 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
                     enterprise.setSelected(true);
                 }
             }
+        }
+
+        for (KyEnterprise enterprise:kyEnterprises) {
+            if(ObjectUtils.isEmpty(enterprise.getBusinessTerm())&&ObjectUtils.isEmpty(enterprise.getBusinessTermStart())){
+                enterprise.setBusinessTermStr("无固定期限");
+            }else{
+                if(ObjectUtils.isEmpty(enterprise.getBusinessTerm())){
+                    enterprise.setBusinessTermStr(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,enterprise.getBusinessTermStart())+" 至 "+"无固定期限");
+                }else  if(ObjectUtils.isEmpty(enterprise.getBusinessTermStart())){
+                    enterprise.setBusinessTermStr("无固定期限"+" 至 "+DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,enterprise.getBusinessTerm()));
+                }else {
+                    enterprise.setBusinessTermStr(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,enterprise.getBusinessTermStart())+" 至 "+DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD,enterprise.getBusinessTerm()));
+                }
+
+
+            }
+
         }
         return kyEnterprises;
     }
@@ -94,6 +115,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int insertKyEnterprise(KyEnterprise kyEnterprise) {
         kyEnterprise.setCreateTime(DateUtils.getNowDate());
         return kyEnterpriseMapper.insertKyEnterprise(kyEnterprise);
@@ -106,6 +128,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateKyEnterprise(KyEnterprise kyEnterprise) {
         return kyEnterpriseMapper.updateKyEnterprise(kyEnterprise);
     }
@@ -133,6 +156,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
     }
 
     @Override
+    @Transactional
     public String importEnterprise(List<KyEnterprise> enterpriseList, boolean updateSupport, String operName) {
         if (StringUtils.isNull(enterpriseList) || enterpriseList.size() == 0) {
             throw new ServiceException("导入企业数据不能为空！");
@@ -143,6 +167,12 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
         StringBuilder failureMsg = new StringBuilder();
 
         for (KyEnterprise enterprise : enterpriseList) {
+            if(StringUtils.isEmpty(enterprise.getName())){
+                continue;
+            }
+            enterprise.setName(enterprise.getName().trim());
+            //导入数据处理
+            setingsKyEnterprise(enterprise);
             int isRunFail = 0;
             try {
 
@@ -173,7 +203,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
                     } else if (validateEnterpriseByStreet(enterprise)) {
                         failureNum++;
                         isRunFail++;
-                        failureMsg.append("<br/>" + failureNum + "、企业名称 " + enterprise.getRegistrationStreet() + " 的街道信息有误，查询不到当前街道信息");
+                        failureMsg.append("<br/>" + failureNum + "、企业名称 " + enterprise.getName() + " 的街道信息有误，查询不到当前街道信息");
                     } else {
                         BeanValidators.validateWithException(validator, enterprise);
                         insertKyEnterprise(enterprise);
@@ -200,9 +230,10 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
                     } else if (validateEnterpriseByStreet(enterprise)) {
                         failureNum++;
                         isRunFail++;
-                        failureMsg.append("<br/>" + failureNum + "、企业名称 " + enterprise.getRegistrationStreet() + " 的街道信息有误，查询不到当前街道信息");
+                        failureMsg.append("<br/>" + failureNum + "、企业名称 " + enterprise.getName() + " 的街道信息有误，查询不到当前街道信息");
                     } else {
                         BeanValidators.validateWithException(validator, enterprise);
+                        enterprise.setId(enterprises.get(0).getId());
                         this.updateKyEnterprise(enterprise);
                         successNum++;
                         successMsg.append("<br/>" + successNum + "、企业名称 " + enterprise.getName() + " 更新成功");
@@ -231,9 +262,31 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
         return successMsg.toString();
     }
 
+    private void setingsKyEnterprise(KyEnterprise enterprise) {
+        //营业期限处理
+       if(StringUtils.isNotNull(enterprise.getBusinessTermStr())){
+           if(!enterprise.getBusinessTermStr().trim().equals("无固定期限")){
+               if(enterprise.getBusinessTermStr().indexOf("至")!=-1){
+                   if(enterprise.getBusinessTermStr().indexOf("无固定期限")==-1){
+                       String businessTerm=enterprise.getBusinessTermStr().substring(enterprise.getBusinessTermStr().indexOf("至")+1,enterprise.getBusinessTermStr().length()).trim();
+                       enterprise.setBusinessTerm(DateUtils.parseDate(businessTerm));
+                   }
+                   String businessTermStr=enterprise.getBusinessTermStr().substring(0,enterprise.getBusinessTermStr().indexOf("至")).trim();
+                   enterprise.setBusinessTermStart(DateUtils.parseDate(businessTermStr));
+               }
+           }
+       }
+
+    }
+
     @Override
     public List<Long> selectKyEnterpriseIds(KyEnterprise kyEnterprise) {
         return kyEnterpriseMapper.selectKyEnterpriseIds(kyEnterprise);
+    }
+
+    @Override
+    public Long selectKyEnterpriseCount(KyEnterprise kyEnterprise) {
+        return kyEnterpriseMapper.selectKyEnterpriseCount(kyEnterprise);
     }
 
     private boolean validateEnterpriseByIndustryTwoLevel(KyEnterprise enterprise) {
@@ -241,7 +294,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
             //校验是否存在于当前字典中
             SysDictData sysDictData = new SysDictData();
             sysDictData.setDictType("trade");
-            List<SysDictData> sysDictDataList = dictDataService.selectDictDataList(sysDictData);
+            List<SysDictData> sysDictDataList =DictUtils.getDictCache("trade");
             sysDictDataList = sysDictDataList.stream().filter(s -> s.getDictValue().equals(enterprise.getIndustryTwoLevel())).collect(Collectors.toList());
             if (sysDictDataList.size() == 0) {
                 return true;
@@ -253,9 +306,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
     private boolean validateEnterpriseByIndustryOneLevel(KyEnterprise enterprise) {
         {
             //校验是否存在于当前字典中
-            SysDictData sysDictData = new SysDictData();
-            sysDictData.setDictType("applicable_industries");
-            List<SysDictData> sysDictDataList = dictDataService.selectDictDataList(sysDictData);
+            List<SysDictData> sysDictDataList =DictUtils.getDictCache("applicable_industries");
             sysDictDataList = sysDictDataList.stream().filter(s -> s.getDictValue().equals(enterprise.getIndustryOneLevel())).collect(Collectors.toList());
             if (sysDictDataList.size() == 0) {
                 return true;
@@ -266,6 +317,9 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
 
     private boolean validateEnterpriseByStreet(KyEnterprise enterprise) {
         {
+              if(StringUtils.isEmpty(enterprise.getRegistrationType())){
+                  return false;
+              }
             //校验当前街道是否正确查询到则插入省份，市，区信息
             SysArea sysAreaParams = new SysArea();
             sysAreaParams.setName(enterprise.getRegistrationType());//街道名称
@@ -300,9 +354,7 @@ public class KyEnterpriseServiceImpl implements IKyEnterpriseService {
 
     private boolean validateEnterpriseByEnterpriseNature(KyEnterprise enterprise) {
         //校验企业性质是否存在于当前字典中
-        SysDictData sysDictData = new SysDictData();
-        sysDictData.setDictType("enterprise_nature");
-        List<SysDictData> sysDictDataList = dictDataService.selectDictDataList(sysDictData);
+        List<SysDictData> sysDictDataList = DictUtils.getDictCache("enterprise_nature");
         sysDictDataList = sysDictDataList.stream().filter(s -> s.getDictValue().equals(enterprise.getEnterpriseNature())).collect(Collectors.toList());
         if (sysDictDataList.size() == 0) {
             return true;

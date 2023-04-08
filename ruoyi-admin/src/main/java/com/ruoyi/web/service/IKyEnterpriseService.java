@@ -72,4 +72,6 @@ public interface IKyEnterpriseService
     public String importEnterprise(List<KyEnterprise> enterpriseList, boolean updateSupport, String operName);
 
     List<Long>  selectKyEnterpriseIds(KyEnterprise kyEnterprise);
+
+    Long selectKyEnterpriseCount(KyEnterprise kyEnterprise);
 }

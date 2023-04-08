@@ -39,10 +39,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="mainBusiness"    column="main_business"    />
         <result property="complianceWithPolicyInformation"    column="compliance_with_policy_information"    />
         <result property="registrationDate"    column="registration_date"    />
+        <result property="bankAccounts"    column="bank_accounts"    />
+        <result property="bankCardNumber"    column="bank_card_number"    />
+        <result property="businessTermStart"    column="business_term_start"    />
+        <result property="identityCardUrl"    column="identity_card_url"    />
     </resultMap>
 
     <sql id="selectKyEnterpriseVo">
-        select id,main_business,registration_date,compliance_with_policy_information,registration_authority,registration_street, nature_of_business,name,business_term,linkman_phone,linkman, address, juridical_person, juridical_person_phone, registration_time, registration_province, registration_city, registration_region, manage_address, social_unified_credit_code_number, enterprise_nature, registration_type, total_assets_range, registered_capital, see_also, official_website, enterprise_mailbox, industry_one_level, industry_two_level, number_of_employees, business_license_url, create_time, create_by,tag_ids from ky_enterprise
+        select id,main_business,identity_card_url,business_term_start,bank_accounts,bank_card_number,registration_date,compliance_with_policy_information,registration_authority,registration_street, nature_of_business,name,business_term,linkman_phone,linkman, address, juridical_person, juridical_person_phone, registration_time, registration_province, registration_city, registration_region, manage_address, social_unified_credit_code_number, enterprise_nature, registration_type, total_assets_range, registered_capital, see_also, official_website, enterprise_mailbox, industry_one_level, industry_two_level, number_of_employees, business_license_url, create_time, create_by,tag_ids from ky_enterprise
     </sql>
 
     <select id="selectKyEnterpriseList" parameterType="KyEnterprise" resultMap="KyEnterpriseResult">
@@ -51,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
             <if test="juridicalPerson != null  and juridicalPerson != ''"> and juridical_person like concat('%', #{juridicalPerson}, '%')</if>
+            <if test="linkman != null  and linkman != ''"> and linkman like concat('%', #{linkman}, '%')</if>
             <if test="juridicalPersonPhone != null  and juridicalPersonPhone != ''"> and juridical_person_phone like concat('%', #{juridicalPersonPhone}, '%')</if>
             <if test="enterpriseNature != null  and enterpriseNature != ''"> and enterprise_nature = #{enterpriseNature}</if>
             <if test="numberOfEmployees != null "> and number_of_employees = #{numberOfEmployees}</if>
@@ -72,9 +77,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="registrationRegion!=null and registrationRegion!=''" >
                 and registration_region = #{registrationRegion}
-                and business_term >=  CURDATE()
+                and (business_term >= CURDATE() or business_term is null)
+                and (CURDATE()>=business_term_start or business_term_start is null)
             </if>
         </where>
+        order  by  create_time desc
     </select>
     
     <select id="selectKyEnterpriseById" parameterType="Long" resultMap="KyEnterpriseResult">
@@ -89,8 +96,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                  index="index" open=" and (" separator=" or " close=")">
             FIND_IN_SET(#{tagId},tag_ids)
         </foreach>
-        and business_term >= CURDATE()
+        and (business_term >= CURDATE() or business_term is null)
+        and (CURDATE()>=business_term_start or business_term_start is null)
         and  registration_region=#{registrationRegion}
+    </select>
+
+    <select id="selectKyEnterpriseCount"  resultType="Long" parameterType="KyEnterprise">
+    select  count(1)  from     ky_enterprise
+    <where>
+        <if test="registrationRegion!=null and registrationRegion!=''" >
+            and registration_region = #{registrationRegion}
+        </if>
+        <if test="businessTerm!=null">
+            and (business_term >= CURDATE() or business_term is null)
+            and (CURDATE()>=business_term_start or business_term_start is null)
+        </if>
+        <if test="name!=null and name!=''">
+            and name=#{name}
+        </if>
+        <if test="socialUnifiedCreditCodeNumber!=null and socialUnifiedCreditCodeNumber!=''">
+            and social_unified_credit_code_number=#{socialUnifiedCreditCodeNumber}
+        </if>
+    </where>
+
     </select>
     <insert id="insertKyEnterprise" parameterType="KyEnterprise" useGeneratedKeys="true" keyProperty="id">
         insert into ky_enterprise
@@ -128,6 +156,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mainBusiness != null">main_business,</if>
             <if test="complianceWithPolicyInformation != null">compliance_with_policy_information,</if>
             <if test="registrationDate != null">registration_date,</if>
+            <if test="bankAccounts != null">bank_accounts,</if>
+            <if test="bankCardNumber != null">bank_card_number,</if>
+            <if test="businessTermStart != null">business_term_start,</if>
+            <if test="identityCardUrl != null">identity_card_url,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null and name != ''">#{name},</if>
@@ -163,6 +195,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mainBusiness != null">#{mainBusiness},</if>
             <if test="complianceWithPolicyInformation != null">#{complianceWithPolicyInformation},</if>
             <if test="registrationDate != null">#{registrationDate},</if>
+            <if test="bankAccounts != null">#{bankAccounts},</if>
+            <if test="bankCardNumber != null">#{bankCardNumber},</if>
+            <if test="businessTermStart != null">#{businessTermStart},</if>
+            <if test="identityCardUrl != null">#{identityCardUrl},</if>
          </trim>
     </insert>
 
@@ -202,6 +238,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mainBusiness != null">main_business=#{mainBusiness},</if>
             <if test="complianceWithPolicyInformation != null">compliance_with_policy_information=#{complianceWithPolicyInformation},</if>
             <if test="registrationDate != null">registration_date=#{registrationDate},</if>
+            <if test="bankAccounts != null">bank_accounts = #{bankAccounts},</if>
+            <if test="bankCardNumber != null">bank_card_number = #{bankCardNumber},</if>
+            <if test="businessTermStart != null">business_term_start = #{businessTermStart},</if>
+            <if test="identityCardUrl != null">identity_card_url = #{identityCardUrl},</if>
         </trim>
         where id = #{id}
     </update>

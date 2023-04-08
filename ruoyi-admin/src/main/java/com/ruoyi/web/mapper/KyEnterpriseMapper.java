@@ -61,4 +61,6 @@ public interface KyEnterpriseMapper
     public int deleteKyEnterpriseByIds(Long[] ids);
 
     List<Long> selectKyEnterpriseIds(KyEnterprise kyEnterprise);
+
+    Long selectKyEnterpriseCount(KyEnterprise kyEnterprise);
 }

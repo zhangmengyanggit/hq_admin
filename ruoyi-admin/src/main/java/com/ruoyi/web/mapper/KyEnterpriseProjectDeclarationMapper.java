@@ -1,6 +1,7 @@
 package com.ruoyi.web.mapper;
 
 import com.ruoyi.web.domain.KyEnterpriseProjectDeclaration;
+import com.ruoyi.web.vo.KyEnterpriseProjectDeclarationVo;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface KyEnterpriseProjectDeclarationMapper
      * @param id 企业申请项目主键
      * @return 企业申请项目
      */
-    public KyEnterpriseProjectDeclaration selectKyEnterpriseProjectDeclarationById(Long id);
+    public KyEnterpriseProjectDeclarationVo selectKyEnterpriseProjectDeclarationById(Long id);
 
     /**
      * 查询企业申请项目列表
@@ -27,7 +28,7 @@ public interface KyEnterpriseProjectDeclarationMapper
      * @param kyEnterpriseProjectDeclaration 企业申请项目
      * @return 企业申请项目集合
      */
-    public List<KyEnterpriseProjectDeclaration> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration);
+    public List<KyEnterpriseProjectDeclarationVo> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclarationVo kyEnterpriseProjectDeclaration);
 
     /**
      * 新增企业申请项目
@@ -53,13 +54,18 @@ public interface KyEnterpriseProjectDeclarationMapper
      */
     public int deleteKyEnterpriseProjectDeclarationById(Long id);
 
-    /**
-     * 批量删除企业申请项目
-     * 
-     * @param ids 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteKyEnterpriseProjectDeclarationByIds(Long[] ids);
 
     Long selectKyEnterpriseProjectDeclarationCountByParams(Map<String, Object> paramsMap);
+    /**
+     * 批量审核企业申请项目
+     *
+     * @param paramsMap
+     * @return 结果
+     */
+    int updateByIds(Map<String,Object> paramsMap);
+
+    List<KyEnterpriseProjectDeclaration> selectList(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration);
+
+
+    Long selectCountByParams(Map<String, Object> paramsMap);
 }

@@ -1,13 +1,18 @@
 package com.ruoyi.web.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.web.domain.KyEnterpriseAppraise;
 import com.ruoyi.web.domain.KyEnterpriseProjectDeclaration;
 import com.ruoyi.web.mapper.KyEnterpriseProjectDeclarationMapper;
 import com.ruoyi.web.service.IKyEnterpriseProjectDeclarationService;
+import com.ruoyi.web.vo.KyEnterpriseProjectDeclarationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 企业申请项目Service业务层处理
@@ -28,7 +33,7 @@ public class KyEnterpriseProjectDeclarationServiceImpl implements IKyEnterpriseP
      * @return 企业申请项目
      */
     @Override
-    public KyEnterpriseProjectDeclaration selectKyEnterpriseProjectDeclarationById(Long id)
+    public KyEnterpriseProjectDeclarationVo selectKyEnterpriseProjectDeclarationById(Long id)
     {
         return kyEnterpriseProjectDeclarationMapper.selectKyEnterpriseProjectDeclarationById(id);
     }
@@ -40,7 +45,7 @@ public class KyEnterpriseProjectDeclarationServiceImpl implements IKyEnterpriseP
      * @return 企业申请项目
      */
     @Override
-    public List<KyEnterpriseProjectDeclaration> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration)
+    public List<KyEnterpriseProjectDeclarationVo> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclarationVo kyEnterpriseProjectDeclaration)
     {
         return kyEnterpriseProjectDeclarationMapper.selectKyEnterpriseProjectDeclarationList(kyEnterpriseProjectDeclaration);
     }
@@ -52,6 +57,7 @@ public class KyEnterpriseProjectDeclarationServiceImpl implements IKyEnterpriseP
      * @return 结果
      */
     @Override
+    @Transactional
     public int insertKyEnterpriseProjectDeclaration(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration)
     {
         return kyEnterpriseProjectDeclarationMapper.insertKyEnterpriseProjectDeclaration(kyEnterpriseProjectDeclaration);
@@ -64,37 +70,45 @@ public class KyEnterpriseProjectDeclarationServiceImpl implements IKyEnterpriseP
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateKyEnterpriseProjectDeclaration(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration)
     {
         return kyEnterpriseProjectDeclarationMapper.updateKyEnterpriseProjectDeclaration(kyEnterpriseProjectDeclaration);
     }
 
-    /**
-     * 批量删除企业申请项目
-     * 
-     * @param ids 需要删除的企业申请项目主键
-     * @return 结果
-     */
-    @Override
-    public int deleteKyEnterpriseProjectDeclarationByIds(Long[] ids)
-    {
-        return kyEnterpriseProjectDeclarationMapper.deleteKyEnterpriseProjectDeclarationByIds(ids);
-    }
 
-    /**
-     * 删除企业申请项目信息
-     * 
-     * @param id 企业申请项目主键
-     * @return 结果
-     */
-    @Override
-    public int deleteKyEnterpriseProjectDeclarationById(Long id)
-    {
-        return kyEnterpriseProjectDeclarationMapper.deleteKyEnterpriseProjectDeclarationById(id);
-    }
+
 
     @Override
     public Long selectKyEnterpriseProjectDeclarationCountByParams(Map<String, Object> paramsMap) {
         return kyEnterpriseProjectDeclarationMapper.selectKyEnterpriseProjectDeclarationCountByParams(paramsMap);
+    }
+
+    @Override
+    @Transactional
+    public int auditKyEnterpriseProjectDeclarationByIds(Long[] ids,Integer status) {
+        Map<String,Object>  paramsMap=new HashMap<String,Object>();
+        paramsMap.put("ids",ids);
+        paramsMap.put("auditStatus",status);
+        return kyEnterpriseProjectDeclarationMapper.updateByIds(paramsMap);
+    }
+
+    @Override
+    public List<KyEnterpriseProjectDeclaration> selectList(KyEnterpriseProjectDeclaration kyEnterpriseProjectDeclaration) {
+        return kyEnterpriseProjectDeclarationMapper.selectList(kyEnterpriseProjectDeclaration);
+    }
+
+    @Override
+    @Transactional
+    public int acceptKyEnterpriseProjectDeclarationByIds(Long[] ids,Integer status) {
+        Map<String,Object>  paramsMap=new HashMap<String,Object>();
+        paramsMap.put("ids",ids);
+        paramsMap.put("auditStatus",status);
+        return kyEnterpriseProjectDeclarationMapper.updateByIds(paramsMap);
+    }
+
+    @Override
+    public Long selectCountByParams(Map<String, Object> paramsMap) {
+        return kyEnterpriseProjectDeclarationMapper.selectCountByParams(paramsMap);
     }
 }

@@ -14,7 +14,22 @@ ruoyi:
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
+  #惠企前端地址
+  severWebUrl: http://ychqqy.hbkykj.cn/
 
+  #企业综合信息查询用到参数
+  ak: fa55bfea988d433e907621e1c1c6b999
+  appId: 527B81F3677C474C93285EB1A20E937C
+  sk: b9fed3e78e064c2e9d8429267784c5c9
+   #科技部_高新技术企业证书信息
+  serviceIdByEnterpriseCertificateInformation: ff8080818727de2901874a2028fa2f06
+  urlByEnterpriseCertificateInformation: http://data.hb.cegn.cn/irsp/openApi/kjbGxjsqyzsInfo/v1
+   #科技部_高新技术企业备案基础信息查询接口
+  serviceIdByBasicInformationForEnterpriseFiling: ff8080818727de2901874a1e8bf92eeb
+  urlByBasicInformationForEnterpriseFiling: http://data.hb.cegn.cn/irsp/openApi/kjbGxjsqybajcxxcxjk/v1
+   #科技部_科技型中小企业创新基金项目信息查询接口
+  serviceIdBySMEInnovationFundProjectInformation: ff8080818727de2901874a187dd82ed4
+  urlBySMEInnovationFundProjectInformation: http://data.hb.cegn.cn/irsp/openApi/kjxzxqycxjjxmxxjk/v1
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
@@ -129,3 +144,4 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+

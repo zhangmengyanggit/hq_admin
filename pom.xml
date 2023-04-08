@@ -180,8 +180,6 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>ky_science_and_technology</module>
-        <module>kykj-scienceandtechnology</module>
     </modules>
     <packaging>pom</packaging>
 

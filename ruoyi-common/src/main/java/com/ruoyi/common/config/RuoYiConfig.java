@@ -32,6 +32,106 @@ public class RuoYiConfig
 
     /** 验证码类型 */
     private static String captchaType;
+    /** severWebUrl */
+    private static String severWebUrl;
+
+
+    /** 企业综合信息查
+      询用到参数 */
+    private static String ak;
+    private static String appId;
+    private static String sk;
+      /** 科技部_高新技术企业证书信息 */
+    private static String serviceIdByEnterpriseCertificateInformation;
+    private static String urlByEnterpriseCertificateInformation;
+    /** 科技部_高新技术企业备案基础信息查询接口 */
+    private static String serviceIdByBasicInformationForEnterpriseFiling;
+    private static String urlByBasicInformationForEnterpriseFiling;
+    /** 科技部_科技型中小企业创新基金项目信息查询接口 */
+    private static String serviceIdBySMEInnovationFundProjectInformation;
+    private static String urlBySMEInnovationFundProjectInformation;
+
+
+    public static String getAk() {
+        return ak;
+    }
+
+    public  void setAk(String ak) {
+        RuoYiConfig.ak = ak;
+    }
+
+    public static String getAppId() {
+        return appId;
+    }
+
+    public  void setAppId(String appId) {
+        RuoYiConfig.appId = appId;
+    }
+
+    public static String getSk() {
+        return sk;
+    }
+
+    public  void setSk(String sk) {
+        RuoYiConfig.sk = sk;
+    }
+
+    public static String getServiceIdByBasicInformationForEnterpriseFiling() {
+        return serviceIdByBasicInformationForEnterpriseFiling;
+    }
+
+    public  void setServiceIdByBasicInformationForEnterpriseFiling(String serviceIdByBasicInformationForEnterpriseFiling) {
+        RuoYiConfig.serviceIdByBasicInformationForEnterpriseFiling = serviceIdByBasicInformationForEnterpriseFiling;
+    }
+
+    public static String getServiceIdBySMEInnovationFundProjectInformation() {
+        return serviceIdBySMEInnovationFundProjectInformation;
+    }
+
+    public  void setServiceIdBySMEInnovationFundProjectInformation(String serviceIdBySMEInnovationFundProjectInformation) {
+        RuoYiConfig.serviceIdBySMEInnovationFundProjectInformation = serviceIdBySMEInnovationFundProjectInformation;
+    }
+
+    public static String getUrlByEnterpriseCertificateInformation() {
+        return urlByEnterpriseCertificateInformation;
+    }
+
+    public  void setUrlByEnterpriseCertificateInformation(String urlByEnterpriseCertificateInformation) {
+        RuoYiConfig.urlByEnterpriseCertificateInformation = urlByEnterpriseCertificateInformation;
+    }
+
+    public static String getUrlByBasicInformationForEnterpriseFiling() {
+        return urlByBasicInformationForEnterpriseFiling;
+    }
+
+    public  void setUrlByBasicInformationForEnterpriseFiling(String urlByBasicInformationForEnterpriseFiling) {
+        RuoYiConfig.urlByBasicInformationForEnterpriseFiling = urlByBasicInformationForEnterpriseFiling;
+    }
+
+    public static String getUrlBySMEInnovationFundProjectInformation() {
+        return urlBySMEInnovationFundProjectInformation;
+    }
+
+    public  void setUrlBySMEInnovationFundProjectInformation(String urlBySMEInnovationFundProjectInformation) {
+        RuoYiConfig.urlBySMEInnovationFundProjectInformation = urlBySMEInnovationFundProjectInformation;
+    }
+
+    public static String getServiceIdByEnterpriseCertificateInformation() {
+        return serviceIdByEnterpriseCertificateInformation;
+    }
+
+    public  void setServiceIdByEnterpriseCertificateInformation(String serviceIdByEnterpriseCertificateInformation) {
+        RuoYiConfig.serviceIdByEnterpriseCertificateInformation = serviceIdByEnterpriseCertificateInformation;
+    }
+
+
+    public static String getSeverWebUrl() {
+        return severWebUrl;
+    }
+
+    public  void setSeverWebUrl(String severWebUrl) {
+        RuoYiConfig.severWebUrl = severWebUrl;
+    }
 
     public String getName()
     {
