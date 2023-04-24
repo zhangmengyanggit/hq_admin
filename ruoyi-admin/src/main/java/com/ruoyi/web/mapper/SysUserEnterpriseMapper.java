@@ -45,21 +45,6 @@ public interface SysUserEnterpriseMapper
      */
     public int updateSysUserEnterprise(SysUserEnterprise sysUserEnterprise);
 
-    /**
-     * 删除用户信息
-     * 
-     * @param userId 用户信息主键
-     * @return 结果
-     */
-    public int deleteSysUserEnterpriseByUserId(Long userId);
-
-    /**
-     * 批量删除用户信息
-     * 
-     * @param userIds 需要删除的数据主键集合
-     * @return 结果
-     */
-    public int deleteSysUserEnterpriseByUserIds(Long[] userIds);
 
     /**
      * 校验用户名称是否唯一
@@ -70,4 +55,15 @@ public interface SysUserEnterpriseMapper
     public  SysUserEnterprise checkUserNameUnique(String userName);
 
     public void updateSysUserEnterpriseByParams(SysUserEnterprise sysUserEnterprise);
+    /**
+     * 校验email是否唯一
+     *
+     * @param email 用户邮箱
+     * @return 结果
+     */
+    public SysUserEnterprise checkEmailUnique(String email);
+
+    public SysUserEnterprise checkPhoneUnique(String phonenumber);
+
+    public SysUserEnterprise selectUserEnterpriseByUserName(String userName);
 }

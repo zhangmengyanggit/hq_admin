@@ -1,6 +1,7 @@
 package com.ruoyi.web.mapper;
 
 import com.ruoyi.web.domain.KyEnterprise;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -63,4 +64,10 @@ public interface KyEnterpriseMapper
     List<Long> selectKyEnterpriseIds(KyEnterprise kyEnterprise);
 
     Long selectKyEnterpriseCount(KyEnterprise kyEnterprise);
+
+    public  int batchUpdateEnterprise(@Param("enterpriseList") List<KyEnterprise> enterpriseList);
+
+    String selectAllSocialUnifiedCreditCodeNumber();
+
+    public KyEnterprise selectKyEnterpriseBySocialUnifiedCreditCodeNumber(String socialUnifiedCreditCodeNumber);
 }

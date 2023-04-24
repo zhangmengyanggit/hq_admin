@@ -1,5 +1,6 @@
 package com.ruoyi.web.service;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.web.domain.KyEnterprise;
 import com.ruoyi.web.domain.SysUserEnterprise;
 
@@ -50,4 +51,59 @@ public interface ISysUserEnterpriseService
     public Long insertSysUserEnterpriseByEnterprise(KyEnterprise enterprise);
 
     public void updateSysUserEnterpriseByEnterprise(KyEnterprise enterpriseOrld, KyEnterprise kyEnterprise);
+
+
+    public  void checkUserDataScope(Long userId);
+
+
+    /**
+     * 校验用户名称是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public boolean checkUserNameUnique(SysUserEnterprise user);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public  boolean checkPhoneUnique(SysUserEnterprise user);
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public   boolean checkEmailUnique(SysUserEnterprise user);
+
+
+
+    /**
+     * 重置用户密码
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public  int resetPwd(SysUserEnterprise user);
+
+    /**
+     * 修改用户状态
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public  int updateUserStatus(SysUserEnterprise user);
+    /**
+     * 导入用户数据
+     *
+     * @param userList 用户数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importUser(List<SysUserEnterprise> userList, Boolean isUpdateSupport, String operName);
 }

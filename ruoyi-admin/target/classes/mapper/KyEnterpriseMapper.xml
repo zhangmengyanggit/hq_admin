@@ -43,10 +43,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="bankCardNumber"    column="bank_card_number"    />
         <result property="businessTermStart"    column="business_term_start"    />
         <result property="identityCardUrl"    column="identity_card_url"    />
+        <result property="status"    column="status"    />
     </resultMap>
 
     <sql id="selectKyEnterpriseVo">
-        select id,main_business,identity_card_url,business_term_start,bank_accounts,bank_card_number,registration_date,compliance_with_policy_information,registration_authority,registration_street, nature_of_business,name,business_term,linkman_phone,linkman, address, juridical_person, juridical_person_phone, registration_time, registration_province, registration_city, registration_region, manage_address, social_unified_credit_code_number, enterprise_nature, registration_type, total_assets_range, registered_capital, see_also, official_website, enterprise_mailbox, industry_one_level, industry_two_level, number_of_employees, business_license_url, create_time, create_by,tag_ids from ky_enterprise
+        select id,status,main_business,identity_card_url,business_term_start,bank_accounts,bank_card_number,registration_date,compliance_with_policy_information,registration_authority,registration_street, nature_of_business,name,business_term,linkman_phone,linkman, address, juridical_person, juridical_person_phone, registration_time, registration_province, registration_city, registration_region, manage_address, social_unified_credit_code_number, enterprise_nature, registration_type, total_assets_range, registered_capital, see_also, official_website, enterprise_mailbox, industry_one_level, industry_two_level, number_of_employees, business_license_url, create_time, create_by,tag_ids from ky_enterprise
     </sql>
 
     <select id="selectKyEnterpriseList" parameterType="KyEnterprise" resultMap="KyEnterpriseResult">
@@ -56,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
             <if test="juridicalPerson != null  and juridicalPerson != ''"> and juridical_person like concat('%', #{juridicalPerson}, '%')</if>
             <if test="linkman != null  and linkman != ''"> and linkman like concat('%', #{linkman}, '%')</if>
+            <if test="linkmanPhone != null  and linkmanPhone != ''"> and linkman_phone like concat('%', #{linkmanPhone}, '%')</if>
             <if test="juridicalPersonPhone != null  and juridicalPersonPhone != ''"> and juridical_person_phone like concat('%', #{juridicalPersonPhone}, '%')</if>
             <if test="enterpriseNature != null  and enterpriseNature != ''"> and enterprise_nature = #{enterpriseNature}</if>
             <if test="numberOfEmployees != null "> and number_of_employees = #{numberOfEmployees}</if>
@@ -110,6 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="businessTerm!=null">
             and (business_term >= CURDATE() or business_term is null)
             and (CURDATE()>=business_term_start or business_term_start is null)
+            and tag_ids!=''
+            and tag_ids is not null
         </if>
         <if test="name!=null and name!=''">
             and name=#{name}
@@ -117,9 +121,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="socialUnifiedCreditCodeNumber!=null and socialUnifiedCreditCodeNumber!=''">
             and social_unified_credit_code_number=#{socialUnifiedCreditCodeNumber}
         </if>
+        <if  test="tagIds!=null and tagIds!=''">
+
+            <foreach collection="tagIds.split(',')" item="tagId"
+                     index="index" open=" and (" separator=" or " close=")">
+                FIND_IN_SET(#{tagId},tag_ids)
+            </foreach>
+        </if>
     </where>
 
     </select>
+    <select id="selectAllSocialUnifiedCreditCodeNumber" resultType="String">
+         SELECT
+	GROUP_CONCAT( social_unified_credit_code_number )
+FROM
+	`ky_enterprise`
+WHERE
+	social_unified_credit_code_number IS NOT NULL
+	AND social_unified_credit_code_number != ''
+
+    </select>
+    <select id="selectKyEnterpriseBySocialUnifiedCreditCodeNumber"  resultType="KyEnterprise" parameterType="String">
+        select  id from  `ky_enterprise` where  social_unified_credit_code_number=#{socialUnifiedCreditCodeNumber}
+    </select>
+
     <insert id="insertKyEnterprise" parameterType="KyEnterprise" useGeneratedKeys="true" keyProperty="id">
         insert into ky_enterprise
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -160,6 +185,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bankCardNumber != null">bank_card_number,</if>
             <if test="businessTermStart != null">business_term_start,</if>
             <if test="identityCardUrl != null">identity_card_url,</if>
+            <if test="status != null">status,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null and name != ''">#{name},</if>
@@ -199,6 +225,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bankCardNumber != null">#{bankCardNumber},</if>
             <if test="businessTermStart != null">#{businessTermStart},</if>
             <if test="identityCardUrl != null">#{identityCardUrl},</if>
+            <if test="status != null">#{status},</if>
          </trim>
     </insert>
 
@@ -242,10 +269,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bankCardNumber != null">bank_card_number = #{bankCardNumber},</if>
             <if test="businessTermStart != null">business_term_start = #{businessTermStart},</if>
             <if test="identityCardUrl != null">identity_card_url = #{identityCardUrl},</if>
+            <if test="status != null">identity_card_url=#{status},</if>
         </trim>
         where id = #{id}
     </update>
+    <update id="batchUpdateEnterprise" parameterType="java.util.List">
+        <foreach collection="enterpriseList" item="item" separator=";">
+            update
+            `ky_enterprise`
+            <set>
+                <if test="item.createTime!=null">
+                    create_time=#{item.createTime},
+                </if>
+                <if test="item.natureOfBusiness!=null">
+                    nature_of_business=#{item.natureOfBusiness},
+                </if>
+                <if test="item.status!=null">
+                    status=#{item.status},
+                </if>
+                <if test="item.juridicalPerson!=null">
+                    juridical_person=#{item.juridicalPerson},
+                </if>
+                <if test="item.registeredCapital!=null">
+                    registered_capital=#{item.registeredCapital},
+                </if>
+                <if test="item.registrationAuthority!=null">
+                    registration_authority=#{item.registrationAuthority},
+                </if>
+                <if test="item.name!=null">
+                    `name`=#{item.name},
+                </if>
+                <if test="item.industryTwoLevel!=null">
+                    `industry_two_level`=#{item.industryTwoLevel},
+                </if>
+                <if test="item.enterpriseNature!=null">
+                    `enterprise_nature`=#{item.enterpriseNature},
+                </if>
+            </set>
+            where
+            social_unified_credit_code_number = #{item.socialUnifiedCreditCodeNumber}
 
+        </foreach>
+    </update>
     <delete id="deleteKyEnterpriseById" parameterType="Long">
         delete from ky_enterprise where id = #{id}
     </delete>

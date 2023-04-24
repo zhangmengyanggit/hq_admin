@@ -27,32 +27,32 @@ public class KyEnterpriseComprehensiveInformationController extends BaseControll
      */
     @PreAuthorize("@ss.hasPermi('scienceandtechnology:enterprisecomprehensiveinformation:basicInformationforenterprisefiling:list')")
     @GetMapping("/listBasicInformationForEnterpriseFiling")
-    public TableDataInfo listBasicInformationForEnterpriseFiling(KyEnterpriseComprehensiveInformation enterpriseComprehensiveInformation)
+    public Object listBasicInformationForEnterpriseFiling(KyEnterpriseComprehensiveInformation enterpriseComprehensiveInformation)
     {
-        startPage();
+        enterpriseComprehensiveInformation.setType(1);
         List<KyEnterpriseComprehensiveInformation> list = enterpriseComprehensiveInformationService.selectList(enterpriseComprehensiveInformation);
-        return getDataTable(list);
+        return list;
     }
     /**
      * 查询科技部_高新技术企业证书信息
      */
     @PreAuthorize("@ss.hasPermi('scienceandtechnology:enterprisecomprehensiveinformation:enterprisecertificateinformation:list')")
     @GetMapping("/listEnterpriseCertificateInformation")
-    public TableDataInfo listEnterpriseCertificateInformation(KyEnterpriseComprehensiveInformation enterpriseComprehensiveInformation)
+    public Object listEnterpriseCertificateInformation(KyEnterpriseComprehensiveInformation enterpriseComprehensiveInformation)
     {
-        startPage();
+        enterpriseComprehensiveInformation.setType(2);
         List<KyEnterpriseComprehensiveInformation> list = enterpriseComprehensiveInformationService.selectList(enterpriseComprehensiveInformation);
-        return getDataTable(list);
+        return list;
     }
     /**
      * 查询科技部_科技型中小企业创新基金项目信息
      */
     @PreAuthorize("@ss.hasPermi('scienceandtechnology:enterprisecomprehensiveinformation:smeinnovationfundprojectinformation:list')")
     @GetMapping("/listSMEInnovationFundProjectInformation")
-    public TableDataInfo listSMEInnovationFundProjectInformation(KyEnterpriseComprehensiveInformation enterpriseComprehensiveInformation)
+    public Object listSMEInnovationFundProjectInformation(KyEnterpriseComprehensiveInformation enterpriseComprehensiveInformation)
     {
-        startPage();
+        enterpriseComprehensiveInformation.setType(3);
         List<KyEnterpriseComprehensiveInformation> list = enterpriseComprehensiveInformationService.selectList(enterpriseComprehensiveInformation);
-        return getDataTable(list);
+        return list;
     }
 }

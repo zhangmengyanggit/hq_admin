@@ -32,16 +32,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="region"    column="region"    />
         <result property="city"    column="city"    />
         <result property="province"    column="province"    />
+        <result property="isSeal"    column="is_seal"    />
     </resultMap>
 
     <sql id="selectKyOriginalPolicyVo">
-        select id, tittle,street,region,city,province, content, policy_level, publishing_department, policy_category, applicable_industries, publish_time, state, create_time, create_by, appendix_url, publish_unit, publisher, means_url, item_status, tag_ids, publish_status, valid_status, valid_date, apply_for_cash, redeem_contact, redeem_contact_phone, trade from ky_original_policy
+        select id,is_seal,tittle,street,region,city,province, content, policy_level, publishing_department, policy_category, applicable_industries, publish_time, state, create_time, create_by, appendix_url, publish_unit, publisher, means_url, item_status, tag_ids, publish_status, valid_status, valid_date, apply_for_cash, redeem_contact, redeem_contact_phone, trade from ky_original_policy
     </sql>
 
     <select id="selectKyOriginalPolicyList" parameterType="KyOriginalPolicy" resultMap="KyOriginalPolicyResult">
         <include refid="selectKyOriginalPolicyVo"/>
         <where>
-            <if test="tittle != null  and tittle != ''"> and tittle = #{tittle}</if>
+            <if test="tittle != null  and tittle != ''"> and tittle  like concat('%', #{tittle},'%') </if>
             <if test="policyLevel != null  and policyLevel != ''"> and policy_level = #{policyLevel}</if>
             <if test="policyCategory != null  and policyCategory != ''"> and policy_category = #{policyCategory}</if>
             <if test="applicableIndustries != null  and applicableIndustries != ''"> and applicable_industries = #{applicableIndustries}</if>
@@ -99,6 +100,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
            </if>
            <if test="tittle!=null">
                and tittle=#{tittle}
+           </if>
+           <if  test="tagIds!=null and tagIds!=''">
+
+               <foreach collection="tagIds.split(',')" item="tagId"
+                        index="index" open=" and (" separator=" or " close=")">
+                   FIND_IN_SET(#{tagId},tag_ids)
+               </foreach>
            </if>
        </where>
     </select>
@@ -210,6 +218,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="region != null">region = #{region},</if>
             <if test="street != null">street = #{street},</if>
             <if test="md5Hash != null">md5_hash = #{md5Hash},</if>
+            <if test="isSeal != null">is_seal = #{isSeal},</if>
         </trim>
         where id = #{id}
     </update>

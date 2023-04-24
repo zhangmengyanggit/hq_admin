@@ -8,6 +8,8 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.web.domain.Tag;
+import com.ruoyi.web.service.IKyEnterpriseService;
+import com.ruoyi.web.service.IKyOriginalPolicyService;
 import com.ruoyi.web.service.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +30,10 @@ public class TagController extends BaseController
 {
     @Autowired
     private ITagService tagService;
-
+    @Autowired
+    private IKyEnterpriseService iKyEnterpriseService;
+    @Autowired
+    private IKyOriginalPolicyService kyOriginalPolicyService;
     /**
      * 查询【标签】列表
      */
@@ -95,6 +100,18 @@ public class TagController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
+        /**
+         * 判断是否有政策或者企业已经绑定了当前标签否则不能删除
+         */
+       boolean checkTagsByEnterprise= iKyEnterpriseService.checkTagsByEnterprise(ids);
+       if(checkTagsByEnterprise){
+           return  error("当前存在标签已经关联了企业不能删除");
+       }
+
+        boolean checkTagsByOriginalPolicy=  kyOriginalPolicyService.checkTagsByOriginalPolicy(ids);
+        if(checkTagsByOriginalPolicy){
+            return  error("当前存在标签已经关联了政策不能删除");
+        }
         return toAjax(tagService.deleteTagByIds(ids));
     }
 

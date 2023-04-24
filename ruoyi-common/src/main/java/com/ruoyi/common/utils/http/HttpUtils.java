@@ -224,7 +224,7 @@ public class HttpUtils
                     paramNeed.append("&").append(entry.getKey()).append("=").append(entry.getValue());
                 }
             }
-
+            log.info("请求参数- {}", paramNeed.toString());
             out.print(paramNeed.toString());
             out.flush();
             in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));

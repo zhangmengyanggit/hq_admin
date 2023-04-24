@@ -75,4 +75,6 @@ public interface IKyOriginalPolicyService
     Long selectKyOriginalPolicyCount(KyOriginalPolicy originalPolicy);
 
     Long selectCountByParams(Map<String, Object> paramsMap);
+
+    public  boolean checkTagsByOriginalPolicy(Long[] ids);
 }

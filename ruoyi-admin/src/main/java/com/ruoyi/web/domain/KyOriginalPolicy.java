@@ -117,6 +117,16 @@ public class KyOriginalPolicy extends BaseEntity
     private Long limit;
     /** 政策id解密后的密文 */
     private String md5Hash;
+    /** 是否盖章（资料地址）默认0没有，1已盖章 */
+    private Integer isSeal;
+
+    public Integer getIsSeal() {
+        return isSeal;
+    }
+
+    public void setIsSeal(Integer isSeal) {
+        this.isSeal = isSeal;
+    }
 
     public String getMd5Hash() {
         return md5Hash;

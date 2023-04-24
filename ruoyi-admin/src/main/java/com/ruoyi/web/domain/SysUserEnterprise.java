@@ -21,7 +21,6 @@ public class SysUserEnterprise extends BaseEntity
     private Long userId;
 
     /** 部门ID */
-    @Excel(name = "部门ID")
     private Long deptId;
 
     /** 用户账号 */
@@ -72,7 +71,19 @@ public class SysUserEnterprise extends BaseEntity
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date loginDate;
     /** 企业id */
+    @Excel(name = "企业ID")
     private Long enterpriseId;
+
+    /** 企业名称 */
+    private String enterpriseName;
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
 
     public Long getEnterpriseId() {
         return enterpriseId;

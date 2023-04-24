@@ -157,6 +157,16 @@ public class KyEnterprise extends BaseEntity
     private  Boolean isSelected=false;
     private  Boolean disabled=true;
     private Long originalpolicyId;
+    /** 企业状态 */
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getBusinessTermStr() {
         return businessTermStr;
@@ -287,7 +297,7 @@ public class KyEnterprise extends BaseEntity
         this.linkman = linkman;
     }
     @NotBlank(message= "联系人电话不能为空")
-    @Size(min = 11, max = 12, message = "手机号码长度不能超过12个字符")
+    @Size(min = 0, max = 12, message = "手机号码长度不能超过12个字符")
     public String getLinkmanPhone() {
         return linkmanPhone;
     }
@@ -299,7 +309,7 @@ public class KyEnterprise extends BaseEntity
     public void setTagIds(String tagIds) {
         this.tagIds = tagIds;
     }
-    @NotBlank(message= "企业标签不能为空")
+    //@NotBlank(message= "企业标签不能为空")
     public String getTagIds() {
         return tagIds;
     }

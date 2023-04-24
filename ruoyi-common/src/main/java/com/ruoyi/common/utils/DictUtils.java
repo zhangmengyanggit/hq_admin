@@ -183,4 +183,19 @@ public class DictUtils
     {
         return CacheConstants.SYS_DICT_KEY + configKey;
     }
+    /**
+     * 获取最大的DictValue
+     *
+     *
+     * @return dictDatas 字典数据列表
+     */
+    public static String getLastDictValue(String dictType)
+    {
+        String dictValue= SpringUtils.getBean(RedisCache.class).getCacheObject(dictType+CacheConstants.SYS_LAST_DICT_VALUE_KEY);
+        if (StringUtils.isNotNull(dictValue))
+        {
+            return dictValue;
+        }
+        return null;
+    }
 }

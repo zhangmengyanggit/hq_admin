@@ -1,6 +1,11 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.ruoyi.common.constant.CacheConstants;
+import com.ruoyi.common.core.redis.RedisCache;
+import com.ruoyi.common.utils.spring.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.core.domain.entity.SysDictData;
@@ -107,5 +112,17 @@ public class SysDictDataServiceImpl implements ISysDictDataService
             DictUtils.setDictCache(data.getDictType(), dictDatas);
         }
         return row;
+    }
+
+    @Override
+    public String getLastDictValueByDictType(String dictType) {
+        String dictValue=  DictUtils.getLastDictValue(dictType);
+        if(dictValue==null){
+            //查询数据库
+            dictValue=dictDataMapper.getLastDictValueByDictType(dictType);
+            //存入缓存且缓存一天
+            SpringUtils.getBean(RedisCache.class).setCacheObject(dictType+ CacheConstants.SYS_LAST_DICT_VALUE_KEY,dictValue,1, TimeUnit.DAYS);
+        }
+        return dictValue;
     }
 }

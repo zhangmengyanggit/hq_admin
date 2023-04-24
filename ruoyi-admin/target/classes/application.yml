@@ -7,7 +7,7 @@ ruoyi:
   # 版权年份
   copyrightYear: 2023
   # 实例演示开关
-  demoEnabled: true
+  demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: D:/ruoyi/uploadPath
   # 获取ip地址开关
@@ -30,6 +30,10 @@ ruoyi:
    #科技部_科技型中小企业创新基金项目信息查询接口
   serviceIdBySMEInnovationFundProjectInformation: ff8080818727de2901874a187dd82ed4
   urlBySMEInnovationFundProjectInformation: http://data.hb.cegn.cn/irsp/openApi/kjxzxqycxjjxmxxjk/v1
+  #法人库参数
+  AccessKey: BCDSGA_c131be4a50b0179769a1f24523320300
+  SecretKey: BCDSGS_60269c4b093b8736970ca740a9285eaa
+  urlSelectAll: https://drs.sc.yichang.gov.cn/api/restapi/prod/IC44300020230403000002/xdata/tbl/api/execute/16fab83e-efe3-488b-b18e-8b3065b610d5
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
@@ -74,9 +78,9 @@ spring:
   servlet:
      multipart:
        # 单个文件大小
-       max-file-size:  10MB
+       max-file-size:  100MB
        # 设置总上传的文件大小
-       max-request-size:  20MB
+       max-request-size:  200MB
   # 服务模块
   devtools:
     restart:

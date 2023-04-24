@@ -51,6 +51,10 @@ public class KyEnterpriseAppraiseController extends BaseController
     public TableDataInfo list(KyEnterpriseAppraise kyEnterpriseAppraise)
     {
         startPage();
+        //超级管理员看全部，各部门看自己创建的政策
+        if(!SecurityUtils.isAdmin(SecurityUtils.getUserId())){
+            kyEnterpriseAppraise.setReplyDepartment(SecurityUtils.getDeptId());
+        }
         List<KyEnterpriseAppraise> list = kyEnterpriseAppraiseService.selectKyEnterpriseAppraiseList(kyEnterpriseAppraise);
         return getDataTable(list);
     }
@@ -102,7 +106,7 @@ public class KyEnterpriseAppraiseController extends BaseController
         Map<String,Object> paramsMap=new HashMap<>();
          //超级管理员看全部，各部门看自己创建的政策
         if(!SecurityUtils.isAdmin(SecurityUtils.getUserId())){
-            paramsMap.put("department", SecurityUtils.getDeptId());
+            paramsMap.put("replyDepartment", SecurityUtils.getDeptId());
         }
         //paramsMap.put("status",0);
         Long  count= kyEnterpriseAppraiseService.selectKyEnterpriseAppraiseCountByParasm(paramsMap);

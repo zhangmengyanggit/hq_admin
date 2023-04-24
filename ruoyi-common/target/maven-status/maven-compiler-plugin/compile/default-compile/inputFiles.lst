@@ -28,6 +28,7 @@ F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\enums\HttpM
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileTypeUtils.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\DateUtils.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\PageUtils.java
+F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\LegalPersonDatabaseUtils.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysUser.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\core\text\CharsetKit.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\constant\HttpStatus.java
@@ -63,6 +64,7 @@ F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\enums\Opera
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\ImageUtils.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\sign\Md5Utils.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\filter\PropertyPreExcludeFilter.java
+F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\HmacAuthUtil.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileException.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\StringUtils.java
 F:\hqpt\RuoYi-Vue-master\ruoyi-common\src\main\java\com\ruoyi\common\utils\OfficialSealUtils.java

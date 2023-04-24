@@ -46,6 +46,7 @@ com\ruoyi\common\filter\PropertyPreExcludeFilter.class
 com\ruoyi\common\core\domain\model\LoginUser.class
 com\ruoyi\common\exception\file\InvalidExtensionException$InvalidMediaExtensionException.class
 com\ruoyi\common\exception\file\FileUploadException.class
+com\ruoyi\common\utils\HmacAuthUtil.class
 com\ruoyi\common\utils\poi\ExcelUtil.class
 com\ruoyi\common\exception\user\UserException.class
 com\ruoyi\common\utils\MessageUtils.class
@@ -114,6 +115,7 @@ com\ruoyi\common\utils\ServletUtils.class
 com\ruoyi\common\utils\html\HTMLFilter.class
 com\ruoyi\common\utils\Threads.class
 com\ruoyi\common\utils\Base64Encoder.class
+com\ruoyi\common\utils\LegalPersonDatabaseUtils.class
 com\ruoyi\common\utils\uuid\Seq.class
 com\ruoyi\common\filter\XssFilter.class
 com\ruoyi\common\core\domain\AjaxResult.class

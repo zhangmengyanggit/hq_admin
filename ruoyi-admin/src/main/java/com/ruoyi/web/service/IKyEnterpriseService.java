@@ -1,6 +1,6 @@
 package com.ruoyi.web.service;
 
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.web.domain.KyEnterprise;
 
 import java.util.List;
@@ -71,7 +71,23 @@ public interface IKyEnterpriseService
      */
     public String importEnterprise(List<KyEnterprise> enterpriseList, boolean updateSupport, String operName);
 
-    List<Long>  selectKyEnterpriseIds(KyEnterprise kyEnterprise);
+    public List<Long>  selectKyEnterpriseIds(KyEnterprise kyEnterprise);
 
-    Long selectKyEnterpriseCount(KyEnterprise kyEnterprise);
+    public Long selectKyEnterpriseCount(KyEnterprise kyEnterprise);
+
+    public int batchUpdateEnterprise(List<KyEnterprise> enterpriseList);
+
+    public String selectAllSocialUnifiedCreditCodeNumber();
+
+    public  boolean checkTagsByEnterprise(Long[] ids);
+
+    public  KyEnterprise selectKyEnterpriseBySocialUnifiedCreditCodeNumber(String unifyCode);
+
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param kyEnterprise 企业信息
+     * @return 下拉树结构列表
+     */
+    public List<TreeSelect> selectEnterpriseTreeList(KyEnterprise kyEnterprise);
 }

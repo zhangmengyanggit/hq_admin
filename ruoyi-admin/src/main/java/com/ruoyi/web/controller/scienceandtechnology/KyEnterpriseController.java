@@ -4,21 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.web.domain.KyEnterprise;
 import com.ruoyi.web.domain.SysUserEnterprise;
 import com.ruoyi.web.service.IKyEnterpriseProjectDeclarationService;
 import com.ruoyi.web.service.IKyEnterpriseService;
+import com.ruoyi.web.service.IKyLegalPersonDatabaseService;
 import com.ruoyi.web.service.ISysUserEnterpriseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -43,6 +39,8 @@ public class KyEnterpriseController extends BaseController
     private  ISysUserEnterpriseService iSysUserEnterpriseService;
     @Autowired
     private IKyEnterpriseProjectDeclarationService kyEnterpriseProjectDeclarationService;
+    @Autowired
+    private IKyLegalPersonDatabaseService legalPersonDatabaseService;
     /**
      * 查询企业列表
      */
@@ -177,5 +175,26 @@ public class KyEnterpriseController extends BaseController
         String operName = getUsername();
         String message = kyEnterpriseService.importEnterprise(enterpriseList, updateSupport, operName);
         return success(message);
+    }
+
+    /**
+     * 查询法人库信息根据社会统一信用代码号
+     */
+    @GetMapping(value = "/getSynLegalPersonDatabase")
+    public AjaxResult getSynLegalPersonDatabase(@RequestParam("socialUnifiedCreditCodeNumber") String socialUnifiedCreditCodeNumber)
+    {
+        if(StringUtils.isEmpty(socialUnifiedCreditCodeNumber)){
+            return error("社会统一信用代码号不能为空");
+        }
+        return success(legalPersonDatabaseService.selectKyEnterpriseBySocialUnifiedCreditCodeNumber(socialUnifiedCreditCodeNumber));
+    }
+    /**
+     * 查询企业树列表
+     */
+
+    @GetMapping("/getEnterpriseTree")
+    public AjaxResult getEnterpriseTree(KyEnterprise kyEnterprise)
+    {
+        return success(kyEnterpriseService.selectEnterpriseTreeList(kyEnterprise));
     }
 }

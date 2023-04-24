@@ -59,7 +59,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countDictDataByType" resultType="Integer">
 	    select count(1) from sys_dict_data where dict_type=#{dictType}  
 	</select>
-	
+	<select id="getLastDictValueByDictType" resultType="String"  parameterType="String">
+		   select 	MAX( CAST( dict_value AS UNSIGNED ) )  from sys_dict_data where dict_type=#{dictType}
+
+	</select>
 	<delete id="deleteDictDataById" parameterType="Long">
  		delete from sys_dict_data where dict_code = #{dictCode}
  	</delete>
@@ -93,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		update sys_dict_data set dict_type = #{newDictType} where dict_type = #{oldDictType}
 	</update>
  	
- 	<insert id="insertDictData" parameterType="SysDictData">
+ 	<insert id="insertDictData" parameterType="SysDictData" useGeneratedKeys="true" keyProperty="dictCode">
  		insert into sys_dict_data(
  			<if test="dictSort != null">dict_sort,</if>
  			<if test="dictLabel != null and dictLabel != ''">dict_label,</if>

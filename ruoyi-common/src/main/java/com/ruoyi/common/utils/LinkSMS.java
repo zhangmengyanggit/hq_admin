@@ -15,9 +15,12 @@ import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class LinkSMS {
+	private static final Logger log = LoggerFactory.getLogger(LinkSMS.class);
 	  private static String CorpID = "XAJT001908";// 接口账户名
 	  
 	  private static String Pwd = "21C954";// 接口密码
@@ -56,6 +59,7 @@ public class LinkSMS {
 	        response.close ();
 	        httpclient.close ();
        	} catch (Exception e) {
+			log.info("短信发送异常:{}",e.getMessage());
        		e.getLocalizedMessage();
    		}	
        	return result;
@@ -65,7 +69,7 @@ public class LinkSMS {
       */
     public static void main(String[] args) {
     	//您所在企业可以申请惠企业务,请复制链接进行查看:<a href='http://localhost/originalpolicyView?id='>Link</a>【快云科技】
-    	String message="您所在企业可以申请惠企业务,请复制链接进行查看:http://ychqqy.hbkykj.cn/originalpolicyView【快云科技】";
+    	String message="您所在企业可以申请惠企业务,如需登录，您的初始账号为您的手机号，初始密码为123456【快云科技】";
 		String phone="18694083843";
 		
 		String result=LinkSMS.sendMSM(phone,message);

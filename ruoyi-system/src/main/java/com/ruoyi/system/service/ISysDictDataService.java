@@ -57,4 +57,6 @@ public interface ISysDictDataService
      * @return 结果
      */
     public int updateDictData(SysDictData dictData);
+
+    public String getLastDictValueByDictType(String dictType);
 }

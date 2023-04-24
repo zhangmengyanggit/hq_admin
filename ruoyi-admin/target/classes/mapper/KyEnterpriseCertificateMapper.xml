@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.KyEnterpriseCertificateMapper">
+    <resultMap type="KyEnterpriseCertificate" id="KyEnterpriseCertificateResult">
+        <result property="id"    column="id"    />
+        <result property="kyEnterpriseId"    column="ky_enterprise_id"    />
+        <result property="certificateNumber"    column="certificate_number"    />
+        <result property="socialUnifiedCreditCodeNumber"    column="social_unified_credit_code_number"    />
+        <result property="industry"    column="industry"    />
+        <result property="industryId"    column="industry_id"    />
+        <result property="certificateStatus"    column="certificate_status"    />
+        <result property="identificationAuthority"    column="identification_authority"    />
+        <result property="determinationDate"    column="determination_date"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="distinct"    column="`distinct`"    />
+        <result property="type"    column="`type`"    />
+    </resultMap>
+
+    <sql id="selectKyEnterpriseCertificateVo">
+        select id, ky_enterprise_id, certificate_number, social_unified_credit_code_number, industry, industry_id, certificate_status, identification_authority, determination_date, province, city, `distinct`, `type` from ky_enterprise_certificate
+    </sql>
+
+    <select id="selectKyEnterpriseCertificateList" parameterType="KyEnterpriseCertificate" resultMap="KyEnterpriseCertificateResult">
+        <include refid="selectKyEnterpriseCertificateVo"/>
+        <where>
+            <if test="kyEnterpriseId != null "> and ky_enterprise_id = #{kyEnterpriseId}</if>
+            <if test="certificateNumber != null  and certificateNumber != ''"> and certificate_number = #{certificateNumber}</if>
+            <if test="socialUnifiedCreditCodeNumber != null  and socialUnifiedCreditCodeNumber != ''"> and social_unified_credit_code_number = #{socialUnifiedCreditCodeNumber}</if>
+            <if test="industry != null  and industry != ''"> and industry = #{industry}</if>
+            <if test="industryId != null "> and industry_id = #{industryId}</if>
+            <if test="certificateStatus != null "> and certificate_status = #{certificateStatus}</if>
+            <if test="identificationAuthority != null  and identificationAuthority != ''"> and identification_authority = #{identificationAuthority}</if>
+            <if test="determinationDate != null  and determinationDate != ''"> and determination_date = #{determinationDate}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="distinct != null  and distinct != ''"> and distinct = #{distinct}</if>
+            <if test="type != null "> and `type` = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectKyEnterpriseCertificateById" parameterType="Long" resultMap="KyEnterpriseCertificateResult">
+        <include refid="selectKyEnterpriseCertificateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertKyEnterpriseCertificate" parameterType="KyEnterpriseCertificate">
+        insert into ky_enterprise_certificate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="kyEnterpriseId != null">ky_enterprise_id,</if>
+            <if test="certificateNumber != null">certificate_number,</if>
+            <if test="socialUnifiedCreditCodeNumber != null">social_unified_credit_code_number,</if>
+            <if test="industry != null">industry,</if>
+            <if test="industryId != null">industry_id,</if>
+            <if test="certificateStatus != null">certificate_status,</if>
+            <if test="identificationAuthority != null">identification_authority,</if>
+            <if test="determinationDate != null">determination_date,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="distinct != null">distinct,</if>
+            <if test="type != null">`type`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="kyEnterpriseId != null">#{kyEnterpriseId},</if>
+            <if test="certificateNumber != null">#{certificateNumber},</if>
+            <if test="socialUnifiedCreditCodeNumber != null">#{socialUnifiedCreditCodeNumber},</if>
+            <if test="industry != null">#{industry},</if>
+            <if test="industryId != null">#{industryId},</if>
+            <if test="certificateStatus != null">#{certificateStatus},</if>
+            <if test="identificationAuthority != null">#{identificationAuthority},</if>
+            <if test="determinationDate != null">#{determinationDate},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="distinct != null">#{distinct},</if>
+            <if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+
+    <update id="updateKyEnterpriseCertificate" parameterType="KyEnterpriseCertificate">
+        update ky_enterprise_certificate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="kyEnterpriseId != null">ky_enterprise_id = #{kyEnterpriseId},</if>
+            <if test="certificateNumber != null">certificate_number = #{certificateNumber},</if>
+            <if test="socialUnifiedCreditCodeNumber != null">social_unified_credit_code_number = #{socialUnifiedCreditCodeNumber},</if>
+            <if test="industry != null">industry = #{industry},</if>
+            <if test="industryId != null">industry_id = #{industryId},</if>
+            <if test="certificateStatus != null">certificate_status = #{certificateStatus},</if>
+            <if test="identificationAuthority != null">identification_authority = #{identificationAuthority},</if>
+            <if test="determinationDate != null">determination_date = #{determinationDate},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="distinct != null">distinct = #{distinct},</if>
+            <if test="type != null">`type` = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteKyEnterpriseCertificateById" parameterType="Long">
+        delete from ky_enterprise_certificate where id = #{id}
+    </delete>
+
+    <delete id="deleteKyEnterpriseCertificateByIds" parameterType="String">
+        delete from ky_enterprise_certificate where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -47,7 +47,7 @@ public interface KyEnterpriseAppraiseMapper
 
     /**
      * 删除企业用户评价
-     * 
+     *
      * @param id 企业用户评价主键
      * @return 结果
      */
@@ -55,7 +55,7 @@ public interface KyEnterpriseAppraiseMapper
 
     /**
      * 批量删除企业用户评价
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */

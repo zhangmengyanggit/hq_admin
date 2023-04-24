@@ -41,4 +41,16 @@ public class CacheConstants
      * 登录账户密码错误次数 redis key
      */
     public static final String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
+    /**
+     * 缓存行业最大的dict_value字典 redis key
+     */
+    public static final String SYS_LAST_DICT_VALUE_KEY = "last_dict_value:";
+    /**
+     * 缓存法人库信息列表
+     */
+    public static final String LEGAL_PERSON_DATABASE = "legal_person_database:";
+    /**
+     * 缓存法人库信息总数量
+     */
+    public static final String LEGAL_PERSON_DATABASE_COUNT = "legal_person_database_count:";
 }
