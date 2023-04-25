@@ -54,6 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="loginIp != null  and loginIp != ''"> and sue.login_ip = #{loginIp}</if>
             <if test="loginDate != null "> and sue.login_date = #{loginDate}</if>
             <if test="enterpriseId != null "> and sue.enterprise_id = #{enterpriseId}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(sue.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(sue.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
         </where>
     </select>
 
@@ -130,7 +136,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="phonenumber != null">phonenumber = #{phonenumber},</if>
             <if test="sex != null">sex = #{sex},</if>
             <if test="avatar != null">avatar = #{avatar},</if>
-            <if test="password != null">password = #{password},</if>
+            <if test="password != null  and password!=''">password = #{password},</if>
             <if test="status != null">status = #{status},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="loginIp != null">login_ip = #{loginIp},</if>

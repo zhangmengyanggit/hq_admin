@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.common.config.RuoYiConfig;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.AuthCache;
@@ -69,7 +71,8 @@ public class LinkSMS {
       */
     public static void main(String[] args) {
     	//您所在企业可以申请惠企业务,请复制链接进行查看:<a href='http://localhost/originalpolicyView?id='>Link</a>【快云科技】
-    	String message="您所在企业可以申请惠企业务,如需登录，您的初始账号为您的手机号，初始密码为123456【快云科技】";
+		String message = "您所在企业可以申请惠企业务,请复制链接进行查看:http://10.27.29.120:81/originalpolicyView?id=6f4922f45568161a8cdf4ad2299f6d23"  + ",如需登录，您的初始账号为您的手机号，初始密码为123456" + "【猇亭区商务局】";
+
 		String phone="18694083843";
 		
 		String result=LinkSMS.sendMSM(phone,message);

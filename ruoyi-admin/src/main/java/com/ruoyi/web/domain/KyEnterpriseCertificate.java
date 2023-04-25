@@ -65,8 +65,18 @@ public class KyEnterpriseCertificate extends BaseEntity
     /** 证书类型：1高新企业 */
     @Excel(name = "证书类型：1高新企业")
     private Long type;
+    /** 企业名称*/
+    private String enterpriseName;
 
-    public void setId(Long id) 
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

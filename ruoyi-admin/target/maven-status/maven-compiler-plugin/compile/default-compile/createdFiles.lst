@@ -44,6 +44,7 @@ com\ruoyi\web\mapper\KyEnterpriseCertificateMapper.class
 com\ruoyi\web\controller\scienceandtechnology\KyEnterpriseController.class
 com\ruoyi\web\controller\system\SysNoticeController.class
 com\ruoyi\web\service\impl\SysNoticeEnterpriseServiceImpl.class
+com\ruoyi\web\controller\scienceandtechnology\SysUserEnterpriseController.class
 com\ruoyi\web\controller\system\SysDictTypeController.class
 com\ruoyi\web\mapper\KyEnterpriseAppraiseMapper.class
 com\ruoyi\web\domain\KyEnterprise.class

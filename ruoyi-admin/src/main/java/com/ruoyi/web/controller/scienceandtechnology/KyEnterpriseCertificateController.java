@@ -56,7 +56,8 @@ public class KyEnterpriseCertificateController extends BaseController
     /**
      * 同步企业证书信息
      */
-    @Log(title = "企业证书详情", businessType = BusinessType.INSERT)
+    @Log(title = "同步企业证书信息", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('scienceandtechnology:certificate:syncToLocalEnterprise')")
     @PostMapping(value = "/syncToLocalEnterprise")
     public AjaxResult syncToLocalEnterprise(@RequestBody KyEnterpriseComprehensiveInformation kyEnterpriseCertificate)
     {

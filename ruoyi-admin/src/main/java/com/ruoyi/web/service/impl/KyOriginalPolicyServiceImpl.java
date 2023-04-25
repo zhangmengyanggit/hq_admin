@@ -327,14 +327,14 @@ public class KyOriginalPolicyServiceImpl implements IKyOriginalPolicyService {
                     log.info("当前线程{}执行盖章失败：{}", Thread.currentThread().getName(), e.getMessage());
                 }
             }
+            if (RuoYiConfig.isDemoEnabled()) {
+                //发送短信
+                String msg = "您所在企业可以申请惠企业务,请复制链接进行查看:" + RuoYiConfig.getSeverWebUrl() + "/originalpolicyView?id=" + kyOriginalPolicy.getMd5Hash() + ",如需登录，您的初始账号为您的手机号，初始密码为123456" + "【猇亭区商务局】";
+                LinkSMS.sendMSM(enterprise.getLinkmanPhone(), msg);
+                log.info("成功发送短信给手机号为{}的用户", enterprise.getLinkmanPhone());
+            }
         }
 
-        if (new RuoYiConfig().isDemoEnabled()) {
-            //发送短信
-            String msg = "您所在企业可以申请惠企业务,请复制链接进行查看:" + RuoYiConfig.getSeverWebUrl() + "/originalpolicyView?id=" + kyOriginalPolicy.getMd5Hash() + ",如需登录，您的初始账号为您的手机号，初始密码为123456" + "【猇亭区商务局】";
-            LinkSMS.sendMSM(enterprise.getLinkmanPhone(), msg);
-            log.info("成功发送短信给手机号为{}的用户", enterprise.getLinkmanPhone());
-        }
     }
 
 

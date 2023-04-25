@@ -44,16 +44,11 @@ public class SysUserEnterpriseController extends BaseController
     }
 
 
-
-
-
-
-
     /**
      * 新增用户
      */
-    @PreAuthorize("@ss.hasPermi('scienceandtechnology:user:add')")
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('scienceandtechnology:userenterprise:add')")
+    @Log(title = "企业用户管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysUserEnterprise user)
     {
@@ -77,8 +72,8 @@ public class SysUserEnterpriseController extends BaseController
     /**
      * 修改用户
      */
-    @PreAuthorize("@ss.hasPermi('scienceandtechnology:user:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('scienceandtechnology:userenterprise:edit')")
+    @Log(title = "企业用户管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysUserEnterprise user)
     {
@@ -105,7 +100,7 @@ public class SysUserEnterpriseController extends BaseController
      * 重置密码
      */
     @PreAuthorize("@ss.hasPermi('scienceandtechnology:user:resetPwd')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "企业用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUserEnterprise user)
     {
@@ -118,7 +113,7 @@ public class SysUserEnterpriseController extends BaseController
     /**
      * 状态修改
      */
-    @PreAuthorize("@ss.hasPermi('scienceandtechnology:user:edit')")
+    @PreAuthorize("@ss.hasPermi('scienceandtechnology:userenterprise:status')")
     @Log(title = "企业用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysUserEnterprise user)

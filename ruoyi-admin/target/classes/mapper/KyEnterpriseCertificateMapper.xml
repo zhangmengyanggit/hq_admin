@@ -15,12 +15,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="determinationDate"    column="determination_date"    />
         <result property="province"    column="province"    />
         <result property="city"    column="city"    />
-        <result property="distinct"    column="`distinct`"    />
-        <result property="type"    column="`type`"    />
+        <result property="distinct"    column="distinct"    />
+        <result property="type"    column="type"    />
+        <result property="enterpriseName"    column="enterpriseName"    />
     </resultMap>
 
     <sql id="selectKyEnterpriseCertificateVo">
-        select id, ky_enterprise_id, certificate_number, social_unified_credit_code_number, industry, industry_id, certificate_status, identification_authority, determination_date, province, city, `distinct`, `type` from ky_enterprise_certificate
+        select ec.id, ec.ky_enterprise_id, ec.certificate_number, ec.social_unified_credit_code_number, ec.industry, ec.industry_id, ec.certificate_status, ec.identification_authority, ec.determination_date, ec.province, ec.city, ec.distinct, ec.type,e.name as enterpriseName  from ky_enterprise_certificate ec  join ky_enterprise e
+        on ec.ky_enterprise_id=e.id
     </sql>
 
     <select id="selectKyEnterpriseCertificateList" parameterType="KyEnterpriseCertificate" resultMap="KyEnterpriseCertificateResult">
@@ -60,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="determinationDate != null">determination_date,</if>
             <if test="province != null">province,</if>
             <if test="city != null">city,</if>
-            <if test="distinct != null">distinct,</if>
+            <if test="distinct != null">`distinct`,</if>
             <if test="type != null">`type`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -93,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="determinationDate != null">determination_date = #{determinationDate},</if>
             <if test="province != null">province = #{province},</if>
             <if test="city != null">city = #{city},</if>
-            <if test="distinct != null">distinct = #{distinct},</if>
+            <if test="distinct != null">`distinct`= #{distinct},</if>
             <if test="type != null">`type` = #{type},</if>
         </trim>
         where id = #{id}
