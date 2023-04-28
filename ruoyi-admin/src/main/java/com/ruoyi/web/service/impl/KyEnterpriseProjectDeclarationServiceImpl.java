@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.web.domain.KyEnterpriseAppraise;
 import com.ruoyi.web.domain.KyEnterpriseProjectDeclaration;
@@ -13,6 +14,8 @@ import com.ruoyi.web.vo.KyEnterpriseProjectDeclarationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.management.RuntimeOperationsException;
 
 /**
  * 企业申请项目Service业务层处理
@@ -47,7 +50,13 @@ public class KyEnterpriseProjectDeclarationServiceImpl implements IKyEnterpriseP
     @Override
     public List<KyEnterpriseProjectDeclarationVo> selectKyEnterpriseProjectDeclarationList(KyEnterpriseProjectDeclarationVo kyEnterpriseProjectDeclaration)
     {
-        return kyEnterpriseProjectDeclarationMapper.selectKyEnterpriseProjectDeclarationList(kyEnterpriseProjectDeclaration);
+        List<KyEnterpriseProjectDeclarationVo>  kyEnterpriseProjectDeclarationVos=kyEnterpriseProjectDeclarationMapper.selectKyEnterpriseProjectDeclarationList(kyEnterpriseProjectDeclaration);
+        kyEnterpriseProjectDeclarationVos.stream().forEach(e->{
+            e.setBusinessLicenseUrl(RuoYiConfig.getSeverWebUrl()+e.getBusinessLicenseUrl());
+            e.setIdentityCardUrl(RuoYiConfig.getSeverWebUrl()+e.getIdentityCardUrl());
+        });
+
+        return kyEnterpriseProjectDeclarationVos;
     }
 
     /**

@@ -27,11 +27,13 @@
         <result property="reviewerPhone" column="reviewer_phone"/>
         <result property="reviewer" column="reviewer"/>
         <result property="publishingDepartment" column="publishing_department"/>
+        <result property="identityCardUrl" column="identity_card_url"/>
+        <result property="businessLicenseUrl" column="business_license_url"/>
     </resultMap>
 
     <sql id="selectKyEnterpriseProjectDeclarationVo">
 SELECT
-	epd.id,epd.reviewer_phone,epd.reviewer,epd.enterprise_id,epd.audit_status,epd.id,epd.declared_file_url,epd.declaration_contact,epd.contact_number,epd.appraise,epd.appraise_answer,pd.original_policy_id,op.means_url,op.tittle,op.policy_level,op.publish_time,op.publisher,e.name,e.linkman,e.linkman_phone,op.publishing_department
+	epd.id,epd.identity_card_url,epd.business_license_url,epd.reviewer_phone,epd.reviewer,epd.enterprise_id,epd.audit_status,epd.id,epd.declared_file_url,epd.declaration_contact,epd.contact_number,epd.appraise,epd.appraise_answer,pd.original_policy_id,op.means_url,op.tittle,op.policy_level,op.publish_time,op.publisher,e.name,e.linkman,e.linkman_phone,op.publishing_department
 FROM
 	ky_enterprise_project_declaration epd
 	JOIN `ky_project_declaration` pd ON epd.project_declaration_id = pd.id
@@ -55,6 +57,9 @@ FROM
                     #{auditStatus}
                 </foreach>
             </if>
+            <if test="name!=null">and e.name  like concat('%',#{name},'%') </if>
+            <if test="tittle!=null">and op.tittle  like concat('%',#{tittle},'%') </if>
+            <if test="id!=null">and epd.id  like concat('%',#{id},'%') </if>
         </where>
         <if test="limit!=null">
             order by epd.id desc

@@ -33,10 +33,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="city"    column="city"    />
         <result property="province"    column="province"    />
         <result property="isSeal"    column="is_seal"    />
+        <result property="md5Hash"    column="md5_hash"    />
     </resultMap>
 
     <sql id="selectKyOriginalPolicyVo">
-        select id,is_seal,tittle,street,region,city,province, content, policy_level, publishing_department, policy_category, applicable_industries, publish_time, state, create_time, create_by, appendix_url, publish_unit, publisher, means_url, item_status, tag_ids, publish_status, valid_status, valid_date, apply_for_cash, redeem_contact, redeem_contact_phone, trade from ky_original_policy
+        select id,is_seal,tittle,street,region,city,province, content, policy_level, publishing_department, policy_category, applicable_industries, publish_time, state, create_time, create_by, appendix_url, publish_unit, publisher, means_url, item_status, tag_ids, publish_status, valid_status, valid_date, apply_for_cash, redeem_contact, redeem_contact_phone, trade,md5_hash from ky_original_policy
     </sql>
 
     <select id="selectKyOriginalPolicyList" parameterType="KyOriginalPolicy" resultMap="KyOriginalPolicyResult">

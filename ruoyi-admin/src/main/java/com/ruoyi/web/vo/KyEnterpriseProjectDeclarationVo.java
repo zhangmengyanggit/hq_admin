@@ -90,6 +90,26 @@ public class KyEnterpriseProjectDeclarationVo
     private String linkmanPhone;
     /**部门id */
     private Long publishingDepartment;
+    /** 身份证上传地址 */
+    private String  identityCardUrl;
+    /** 营业执照文件地址 */
+    private String  businessLicenseUrl;
+
+    public String getIdentityCardUrl() {
+        return identityCardUrl;
+    }
+
+    public void setIdentityCardUrl(String identityCardUrl) {
+        this.identityCardUrl = identityCardUrl;
+    }
+
+    public String getBusinessLicenseUrl() {
+        return businessLicenseUrl;
+    }
+
+    public void setBusinessLicenseUrl(String businessLicenseUrl) {
+        this.businessLicenseUrl = businessLicenseUrl;
+    }
 
     public String getReviewerPhone() {
         return reviewerPhone;

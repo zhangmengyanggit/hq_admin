@@ -42,8 +42,7 @@ public class IndexController extends BaseController
     private IKyEnterpriseProjectDeclarationService kyEnterpriseProjectDeclarationService;
     @Autowired
     private IKyOriginalPolicyService kyOriginalPolicyService;
-    @Autowired
-    private ISysDictDataService dictDataService;
+
     /**
      * 查询企业数和政策数
      */

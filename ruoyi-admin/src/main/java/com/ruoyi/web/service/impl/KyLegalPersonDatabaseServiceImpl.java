@@ -50,7 +50,7 @@ public class KyLegalPersonDatabaseServiceImpl implements IKyLegalPersonDatabaseS
     public KyEnterprise selectKyEnterpriseBySocialUnifiedCreditCodeNumber(String socialUnifiedCreditCodeNumber) {
         KyEnterprise enterprise = new KyEnterprise();
         RedisCache redisCache = SpringUtils.getBean(RedisCache.class);
-        List<KyLegalPersonDatabase> kyLegalPersonDatabaseList = null;
+        List<KyLegalPersonDatabase> kyLegalPersonDatabaseList = Collections.EMPTY_LIST;
         String result = null;
         if (redisCache.hasKey(CacheConstants.LEGAL_PERSON_DATABASE)) {
             kyLegalPersonDatabaseList = redisCache.getCacheObject(CacheConstants.LEGAL_PERSON_DATABASE);
