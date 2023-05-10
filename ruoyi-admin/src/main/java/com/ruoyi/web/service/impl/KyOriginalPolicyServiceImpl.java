@@ -229,7 +229,7 @@ public class KyOriginalPolicyServiceImpl implements IKyOriginalPolicyService {
                      * 发送消息到企业前端
                      * */
                     SysNoticeEnterprise notice = new SysNoticeEnterprise();
-                    notice.setNoticeContent("温馨提醒:政策标题为[" + kyOriginalPolicy.getTittle() + "]的政策发布了，请去政策申请申请当前惠企政策");
+                    notice.setNoticeContent("温馨提醒:政策标题为[" + kyOriginalPolicy.getTittle() + "]的政策发布了，请去企业政策兑付模块申报当前惠企政策");
                     notice.setNoticeTitle("政策发布通知");
                     notice.setNoticeType("1");
                     notice.setCreateBy(userName);

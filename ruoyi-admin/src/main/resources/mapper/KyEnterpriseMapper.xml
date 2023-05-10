@@ -70,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and date_format(registration_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
             <if test="industryOneLevel != null  and industryOneLevel != ''"> and industry_one_level = #{industryOneLevel}</if>
+            <if test="industryTwoLevel != null  and industryTwoLevel != ''"> and industry_two_level = #{industryTwoLevel}</if>
             <if  test="tagIds!=null and tagIds!=''">
 
                  <foreach collection="tagIds.split(',')" item="tagId"
